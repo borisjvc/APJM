@@ -7,6 +7,8 @@ import Navbar from './componentes/navbar';
 import Login from './paginas/Login';
 import Peliculas from './paginas/Peliculas';
 import Juegos from './paginas/Juegos';
+import Anime from './paginas/Anime';
+import Manga from './paginas/Manga';
 
 function App() {
   const router = createBrowserRouter([
@@ -24,11 +26,11 @@ function App() {
     },
     {
       path: "/anime",
-      element: <Peliculas />
+      element: <Anime />
     },
     {
       path: "/manga",
-      element: <Peliculas />
+      element: <Manga />
     },
     {
       path: "/login",

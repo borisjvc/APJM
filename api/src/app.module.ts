@@ -5,6 +5,10 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SteamController } from './juegos/steam.controller';
 import { HttpModule } from '@nestjs/axios';
+import { AnimeController } from './anime/aniList.controller';
+import { AnimeService } from './anime/aniList.service';
+import { MangaController } from './manga/manga.controller';
+import { MangaService } from './manga/manga.service';
 
 @Module({
   imports: [
@@ -19,7 +23,7 @@ import { HttpModule } from '@nestjs/axios';
     synchronize: true
     }),
   UsersModule, HttpModule],
-  controllers: [AppController, SteamController],
-  providers: [AppService],
+  controllers: [AppController, SteamController, AnimeController, MangaController],
+  providers: [AppService, AnimeService, MangaService],
 })
 export class AppModule {}

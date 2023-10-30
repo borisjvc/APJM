@@ -3,7 +3,7 @@ import { Button, Card, Dimmer, Loader } from "semantic-ui-react";
 import axios from "axios";
 
 export default function Peliculas() {
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(false);
     const [peliculas, setPeliculas] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const apiKey = "174aa06026msh011534ebd880cdfp152733jsnd5a6ad656f65";
@@ -48,9 +48,14 @@ export default function Peliculas() {
 
     return (
         <div>
-            <Dimmer active={loading}>
-                <Loader>Loading</Loader>
+            <div>
+                <Button content='Anterior' color='yellow' onClick={handlePrevPage} disabled={currentPage === 1} icon='left chevron' labelPosition='left' />
+                <Button content='Siguiente' color='yellow' onClick={handleNextPage} icon='right chevron' labelPosition='right' />
+            </div>
+            <Dimmer active={isLoading} style={{ height: "180vh" }}>
+                <Loader>Cargando</Loader>
             </Dimmer>
+            <br></br>
             <Card.Group itemsPerRow={5}>
                 {peliculas.map((pelicula) => (
                     <Card
@@ -60,6 +65,7 @@ export default function Peliculas() {
                         link
                         className="card-container"
                     >
+                        <Card.Header>{pelicula.titleText.text}</Card.Header>
                         <img
                             src={pelicula.primaryImage ? pelicula.primaryImage.url : "URL_Predeterminada"}
                             alt={pelicula.titleText.text}
@@ -68,11 +74,6 @@ export default function Peliculas() {
                     </Card>
                 ))}
             </Card.Group>
-            <br></br>
-            <div>
-                <Button content='Anterior' color='yellow' onClick={handlePrevPage} disabled={currentPage === 1} icon='left chevron' labelPosition='left' />
-                <Button content='Siguiente' color='yellow' onClick={handleNextPage} icon='right chevron' labelPosition='right' />
-            </div>
         </div>
     );
 }

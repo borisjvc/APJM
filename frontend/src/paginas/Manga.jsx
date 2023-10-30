@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Button, Card, Dimmer, Loader } from "semantic-ui-react";
 import axios from "axios";
 
-export default function Juegos() {
-    const [juegos, setJuegos] = useState([]);
+export default function Manga() {
+    const [Mangas, setMangas] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
 
-    const fetchJuegos = async () => {
+    const fetchMangas = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.get(`http://localhost:3001/games?page=${currentPage}`);
-            setJuegos(response.data);
+            const response = await axios.get(`http://localhost:3001/manga/list?page=${currentPage}`);
+            setMangas(response.data.data);
+            console.log(response.data.data);
         } catch (error) {
             console.error(error);
         }
@@ -19,7 +20,7 @@ export default function Juegos() {
     };
 
     useEffect(() => {
-        fetchJuegos();
+        fetchMangas();
     }, [currentPage]);
 
     const handleNextPage = () => {
@@ -34,6 +35,8 @@ export default function Juegos() {
 
     return (
         <div>
+
+
             <div>
                 <Button content='Anterior' color='yellow' onClick={handlePrevPage} disabled={currentPage === 1} icon='left chevron' labelPosition='left' />
                 <Button content='Siguiente' color='yellow' onClick={handleNextPage} icon='right chevron' labelPosition='right' />
@@ -42,25 +45,25 @@ export default function Juegos() {
                 <Loader>Cargando</Loader>
             </Dimmer>
             <br></br>
-
             <Card.Group itemsPerRow={5}>
-                {juegos.map((juego) => (
+                {Mangas.map((manga) => (
                     <Card
-                        key={juego.id}
+                        key={manga.node.id}
                         color="yellow"
                         raised
                         link
                         className="card-container"
                     >
-                        <Card.Header>{juego.name}</Card.Header>
+                        <Card.Header>{manga.node.title}</Card.Header>
                         <img
-                            src={juego.background_image ? juego.background_image : "URL_Predeterminada"}
-                            alt={juego.name}
+                            src={manga.node.main_picture.large || "URL_Predeterminada"}
+                            alt={manga.node.title}
                             className="card-image"
                         />
                     </Card>
                 ))}
             </Card.Group>
+
         </div>
     );
 }
