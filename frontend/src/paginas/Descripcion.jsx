@@ -41,7 +41,7 @@ export default function Descripcion() {
                 <img src={anime.coverImage.large} alt={anime.title.romaji} />
                 <br></br>
                 <br></br>
-                <Button content="Ver más tarde" icon='bookmark' labelPosition='left' compact color="blue"/>{/* Si ya está en ver más tarde mostrar Eliminar / Marcar como completado */}
+                <Button content="Ver más tarde" icon='bookmark' labelPosition='left' compact color="blue" />{/* Si ya está en ver más tarde mostrar Eliminar / Marcar como completado */}
 
                 <br></br>
                 <br></br>
