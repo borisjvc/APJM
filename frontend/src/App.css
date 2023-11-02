@@ -35,18 +35,126 @@ header {
 }
 
 /* Cards css */
-.card-container {
-  width: 250px;
-  height: 280px; 
-}
-
 .card-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-
+  transition: 0.3s;
+  /* Duración de la transición al pasar el mouse */
 }
 
-.header{
-  background-color: #f2ab1d;
+.card-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-container:hover .card-image {
+  filter: brightness(30%);
+  /* Oscurece la imagen al pasar el mouse */
+}
+
+.card-container:hover .card-title {
+  transform: translateY(0);
+  /* Muestra el título al pasar el mouse */
+}
+
+.card-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* Fondo semitransparente */
+  color: white;
+  padding: 8px;
+  text-align: center;
+  transform: translateY(100%);
+  /* Inicialmente, oculta el título */
+  transition: transform 0.3s;
+  /* Transición para mostrar el título */
+}
+
+/* Footer.css */
+.footer {
+  background-color: #22211F;
+  color: white;
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.footer-content {
+  width: 100%;
+  max-width: 1600px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-content {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.left-content::after {
+  content: '';
+  display: block;
+  width: 50%;
+  height: 3px;
+  background-color: yellow;
+  position: absolute;
+  bottom: -15px;
+  left: 25%;
+}
+
+.right-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.right-content::after {
+  content: '';
+  display: block;
+  width: 50%;
+  height: 3px;
+  background-color: yellow;
+  position: absolute;
+  bottom: -15px;
+  left: 25%;
+}
+
+.list a {
+  color: white;
+}
+
+/* Descripcion */
+.description-title{
+  color:rgb(252, 190, 45);
+}
+.descripcion-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  color: #F5F5F5;
+}
+
+.left-aside {
+  flex: 1;
+}
+
+.middle-article {
+  flex: 2; /* Adjust the flex value to control the width of the middle article */
+}
+
+.right-aside {
+  flex: 1;
 }

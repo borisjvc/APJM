@@ -9,6 +9,8 @@ import { AnimeController } from './anime/aniList.controller';
 import { AnimeService } from './anime/aniList.service';
 import { MangaController } from './manga/manga.controller';
 import { MangaService } from './manga/manga.service';
+import { PeliculasController } from './peliculas/peliculas.controller';
+import { PeliculasService } from './peliculas/peliculas.service';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { MangaService } from './manga/manga.service';
     synchronize: true
     }),
   UsersModule, HttpModule],
-  controllers: [AppController, SteamController, AnimeController, MangaController],
-  providers: [AppService, AnimeService, MangaService],
+  controllers: [AppController, SteamController, AnimeController, MangaController, PeliculasController],
+  providers: [AppService, AnimeService, MangaService, PeliculasService],
 })
 export class AppModule {}

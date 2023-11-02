@@ -1,30 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Dimmer, Loader } from "semantic-ui-react";
+import { Button, Card, Loader, Image, Dimmer } from "semantic-ui-react";
 import axios from "axios";
+import Footer from "../componentes/Footer";
+import { useNavigate } from "react-router-dom";
 
 export default function Peliculas() {
     const [isLoading, setLoading] = useState(false);
     const [peliculas, setPeliculas] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const apiKey = "174aa06026msh011534ebd880cdfp152733jsnd5a6ad656f65";
-    const apiUrl = "https://moviesdatabase.p.rapidapi.com/titles";
+    const navigate = useNavigate();
 
     const fetchMovies = async (page) => {
         try {
             setLoading(true);
-            const response = await axios.get(apiUrl, {
-                params: {
-                    endYear: "2022",
-                    info: 'mini_info',
-                    startYear: "1990",
-                    page: page,
-                },
-                headers: {
-                    'X-RapidAPI-Key': apiKey,
-                    'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
-                },
-            });
-            const newMovies = response.data.results;
+            const response = await axios.get(`http://localhost:3001/movies/${currentPage}`);
+            const newMovies = response.data;
             setPeliculas(newMovies);
         } catch (error) {
             console.error(error);
@@ -46,34 +36,46 @@ export default function Peliculas() {
         }
     };
 
+    const handleCardClick = (peliculaId) => {
+        navigate(`/descripcion/peliculas/${peliculaId}`);
+    };
+
+
     return (
-        <div>
+        <>
             <div>
-                <Button content='Anterior' color='yellow' onClick={handlePrevPage} disabled={currentPage === 1} icon='left chevron' labelPosition='left' />
-                <Button content='Siguiente' color='yellow' onClick={handleNextPage} icon='right chevron' labelPosition='right' />
+                <div>
+                    <Button content='Anterior' color='yellow' onClick={handlePrevPage} disabled={currentPage === 1} icon='left chevron' labelPosition='left' />
+                    <Button content='Siguiente' color='yellow' onClick={handleNextPage} icon='right chevron' labelPosition='right' />
+                </div>
+                <br></br>
+
+                <Dimmer active={isLoading} page>
+                    <Loader content="Cargando, por favor espere..." />
+                </Dimmer>
+                <Card.Group itemsPerRow={5}>
+                    {peliculas.map((pelicula) => (
+                        <Card
+                            key={pelicula.id}
+                            color="yellow"
+                            raised
+                            link
+                            className="card-container"
+                            onClick={() => handleCardClick(pelicula.id)}
+                        >
+                            <Image src={pelicula.primaryImage ? pelicula.primaryImage.url : "URL_Predeterminada"} className="card-image" />
+                            <div className="card-title">{pelicula.titleText.text}</div>
+                        </Card>
+                    ))}
+                </Card.Group>
+                <br></br>
+                <div>
+                    <Button content='Anterior' color='yellow' onClick={handlePrevPage} disabled={currentPage === 1} icon='left chevron' labelPosition='left' />
+                    <Button content='Siguiente' color='yellow' onClick={handleNextPage} icon='right chevron' labelPosition='right' />
+                </div>
+
             </div>
-            <Dimmer active={isLoading} style={{ height: "180vh" }}>
-                <Loader>Cargando</Loader>
-            </Dimmer>
-            <br></br>
-            <Card.Group itemsPerRow={5}>
-                {peliculas.map((pelicula) => (
-                    <Card
-                        key={pelicula.id}
-                        color="yellow"
-                        raised
-                        link
-                        className="card-container"
-                    >
-                        <Card.Header>{pelicula.titleText.text}</Card.Header>
-                        <img
-                            src={pelicula.primaryImage ? pelicula.primaryImage.url : "URL_Predeterminada"}
-                            alt={pelicula.titleText.text}
-                            className="card-image"
-                        />
-                    </Card>
-                ))}
-            </Card.Group>
-        </div>
+            <Footer />
+        </>
     );
 }

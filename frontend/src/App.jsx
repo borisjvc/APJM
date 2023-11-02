@@ -1,7 +1,6 @@
 import './App.css';
 import 'semantic-ui-css/semantic.min.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Footer from './componentes/footer';
 import Inicio from './paginas/Inicio';
 import Navbar from './componentes/navbar';
 import Login from './paginas/Login';
@@ -9,12 +8,17 @@ import Peliculas from './paginas/Peliculas';
 import Juegos from './paginas/Juegos';
 import Anime from './paginas/Anime';
 import Manga from './paginas/Manga';
+import Descripcion from './paginas/Descripcion';
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Inicio />
+    },
+    {
+      path: "/descripcion/:Categoria/:Id",
+      element: <Descripcion/>
     },
     {
       path: "/peliculas",
@@ -41,7 +45,6 @@ function App() {
     <div>
         <Navbar />
         <RouterProvider router={router} />
-        <Footer />
     </div>
     
   );

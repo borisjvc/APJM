@@ -10,4 +10,9 @@ export class AnimeController {
         const animeList = await this.animeService.getAnimeList(page);
         return animeList;
     }
+
+    @Get('getAnimeById')
+    async getAnimeById(@Query('id') id: number) {
+        return this.animeService.getAnimeById(id);
+    }
 }

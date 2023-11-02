@@ -1,8 +1,25 @@
-import React from "react";
-import { Card, Image } from 'semantic-ui-react'
+import React, { useState, useEffect } from "react";
+import { Button, Card, Dimmer, Loader, Image } from "semantic-ui-react";
+import axios from "axios";
 
 export default function Inicio() {
-    const src = 'https://wallpapers.com/images/hd/4k-sharp-colorful-clouds-364l86a13wi6hkqg.jpg';
+    const [peliculas, setPeliculas] = useState([]);
+    const [isLoading, setLoading] = useState(false);
+
+    const fetchMovies = async () => {
+        try {
+            const response = await axios.get("http://localhost:3001/movies/1");
+            const newMovies = response.data;
+            setPeliculas(newMovies);
+        } catch (error) {
+            console.error(error);
+        }
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        fetchMovies();
+    }, []);
 
     return (
         <article>
@@ -41,13 +58,52 @@ export default function Inicio() {
                 ></Image>
             </div>
             <br></br>
-            <Card.Group itemsPerRow={4}>
-                <Card color='yellow' raised link image={src} href="/anime/a" />
-                <Card color='yellow' raised link image={src} href="/anime/a" />
-                <Card color='yellow' raised link image={src} href="/anime/a" />
-                <Card color='yellow' raised link image={src} href="/anime/a" />
-                <Card color='yellow' raised link image={src} href="/anime/a" />
-                <Card color='yellow' raised link image={src} href="/anime/a" />
+            <h1>Peliculas</h1>
+            <Card.Group itemsPerRow={5}>
+                {peliculas.map((pelicula) => (
+                    <Card
+                        key={pelicula.id}
+                        color="yellow"
+                        raised
+                        link
+                        className="card-container"
+                    >
+                        <Image src={pelicula.primaryImage ? pelicula.primaryImage.url : "URL_Predeterminada"} className="card-image" />
+                        <div className="card-title">{pelicula.titleText.text}</div>
+                    </Card>
+                ))}
+            </Card.Group>
+            <br></br>
+            <h1>Animes</h1>
+            <Card.Group itemsPerRow={5}>
+                {peliculas.map((pelicula) => (
+                    <Card
+                        key={pelicula.id}
+                        color="yellow"
+                        raised
+                        link
+                        className="card-container"
+                    >
+                        <Image src={pelicula.primaryImage ? pelicula.primaryImage.url : "URL_Predeterminada"} className="card-image" />
+                        <div className="card-title">{pelicula.titleText.text}</div>
+                    </Card>
+                ))}
+            </Card.Group>
+            <br></br>
+            <h1>Juegos</h1>
+            <Card.Group itemsPerRow={5}>
+                {peliculas.map((pelicula) => (
+                    <Card
+                        key={pelicula.id}
+                        color="yellow"
+                        raised
+                        link
+                        className="card-container"
+                    >
+                        <Image src={pelicula.primaryImage ? pelicula.primaryImage.url : "URL_Predeterminada"} className="card-image" />
+                        <div className="card-title">{pelicula.titleText.text}</div>
+                    </Card>
+                ))}
             </Card.Group>
         </article>
     )
