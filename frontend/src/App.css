@@ -137,7 +137,7 @@ header {
 
 /* Descripcion */
 .description-title{
-  color:#6199ed
+  color:#4f9bd5
 }
 .descripcion-container {
   display: flex;
@@ -159,6 +159,6 @@ header {
 }
 
 .game-image{
-  width: 300px;
-  height: 200px;
+  width: 50vh;
+  height: 30vh;
 }

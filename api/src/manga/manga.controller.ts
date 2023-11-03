@@ -11,7 +11,17 @@ export class MangaController {
             const mangaList = await this.mangaService.getMangaList(page);
             return mangaList;
         } catch (error) {
-            throw new Error(`Failed to fetch manga list: ${error.message}`);
+            throw new Error(`${error.message}`);
+        }
+    }
+
+    @Get('getById')
+    async getMangaById(@Query('id') id: number ){
+        try{
+            const mangaInfo = await this.mangaService.getMangaById(id);
+            return mangaInfo;
+        }catch(error){
+            throw new Error(`${error.message}`)
         }
     }
 }

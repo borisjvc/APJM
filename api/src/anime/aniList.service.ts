@@ -7,19 +7,20 @@ export class AnimeService {
 
   async getAnimeList(page: number) {
     const query = `
-      query {
-        Page(page: ${page}, perPage: 20) {
-          media(type: ANIME) {
-            id
-            title {
-              romaji
-            }
-            coverImage {
-              large
-            }
+    query {
+      Page(page: ${page}, perPage: 20) {
+        media(type: ANIME, sort: START_DATE_DESC, status_not: NOT_YET_RELEASED, isAdult: false, popularity_greater: 10000 ) {
+          id
+          title {
+            romaji
+          }
+          coverImage {
+            large
           }
         }
       }
+    }
+    
     `;
 
     try {

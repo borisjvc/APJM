@@ -1,32 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Dimmer, Loader, Image, Pagination } from "semantic-ui-react";
+import { Card, Image, Pagination } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Footer from "../componentes/Footer";
+import PlaceholderCard from "../componentes/CardPlaceholder";
 
 export default function Anime() {
     const [Animes, setAnimes] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
-    const [totalPages, setTotalPages] = useState(10); // Initial total pages
+    const [totalPages, setTotalPages] = useState(10);
     const navigate = useNavigate();
 
-    const fetchAnimes = async (page) => {
-        setIsLoading(true);
+    const fetchAnimes = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/anime/list?page=${page}`);
+            const response = await axios.get(`http://localhost:3001/anime/list?page=${currentPage}`);
             setAnimes(response.data);
         } catch (error) {
             console.error(error);
         }
-        setIsLoading(false);
     };
 
     useEffect(() => {
-        fetchAnimes(currentPage);
-        // Update total pages based on the current page (for dynamic loading)
+        fetchAnimes();
         if (currentPage >= totalPages) {
-            setTotalPages(currentPage + 10); // Add more pages
+            setTotalPages(currentPage + 10);
         }
     }, [currentPage, totalPages]);
 
@@ -52,27 +49,29 @@ export default function Anime() {
                         siblingRange={1}
                     />
                 </div>
-                <br></br>
-                <Dimmer active={isLoading} page>
-                    <Loader content="Cargando, por favor espere..." />
-                </Dimmer>
+                <br />
+
                 <Card.Group itemsPerRow={5}>
-                    {Animes.map((anime) => (
-                        <Card
-                            key={anime.id}
-                            color="yellow"
-                            raised
-                            link
-                            className="card-container"
-                            onClick={() => handleCardClick(anime.id)}
-                        >
-                            <Image src={anime.coverImage.large || "URL_Predeterminada"} className="card-image" />
-                            <div className="card-title">{anime.title.romaji}</div>
-                        </Card>
-                    ))}
+                    {Animes.length > 0
+                        ? Animes.map((anime) => (
+                            <Card
+                                key={anime.id}
+                                color="yellow"
+                                raised
+                                link
+                                className="card-container"
+                                onClick={() => handleCardClick(anime.id)}
+                            >
+                                <Image src={anime.coverImage.large || 'https://via.placeholder.com/300x200'} className="card-image" />
+                                <div className="card-title">{anime.title.romaji}</div>
+                            </Card>
+                        ))
+                        : Array.from({ length: 20 }, (_, index) => (
+                            <PlaceholderCard key={`placeholder-${index}`} /> 
+                        ))}
                 </Card.Group>
 
-                <br></br>
+                <br />
                 <div>
                     <Pagination
                         activePage={currentPage}
