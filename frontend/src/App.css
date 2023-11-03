@@ -33,6 +33,18 @@ header {
   color: black;
 }
 
+.search-bar {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s ease-in-out;
+}
+
+.search-bar-expanded {
+  width: 30vh;
+  min-width: 200px;
+
+}
+
 /* Cards css */
 .card-image {
   width: 100%;
