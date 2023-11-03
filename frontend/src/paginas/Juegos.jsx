@@ -12,7 +12,7 @@ export default function Juegos() {
     const fetchJuegos = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.get(`http://localhost:3001/games?page=${currentPage}`);
+            const response = await axios.get(`http://localhost:3001/games/list?page=${currentPage}`);
             setJuegos(response.data);
         } catch (error) {
             console.error(error);

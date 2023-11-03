@@ -151,9 +151,14 @@ header {
 }
 
 .middle-article {
-  flex: 2; /* Adjust the flex value to control the width of the middle article */
+  flex: 3; /* Adjust the flex value to control the width of the middle article */
 }
 
 .right-aside {
   flex: 1;
+}
+
+.game-image{
+  width: 300px;
+  height: 200px;
 }
