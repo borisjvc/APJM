@@ -1,13 +1,12 @@
 import React from "react";
-import { Button } from "semantic-ui-react";
+import { Button, Card, Image } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
-import { Card, Image } from "semantic-ui-react";
 
 export default function MangaDescripcion({ manga }) {
     const navigate = useNavigate();
 
-    const handleCardClick = (mangaId) => {
-        navigate(`/descripcion/manga/${mangaId}`);
+    const handleCardClick = (Id) => {
+        navigate(`/descripcion/manga/${Id}`);
     };
 
     return (
@@ -27,7 +26,7 @@ export default function MangaDescripcion({ manga }) {
             </aside>
 
             <div className="vertical-line"></div>
-            
+
             <article className="middle-article">
                 <h1 className="description-title">{manga.title}</h1>
                 <h2>Sinopsis: </h2>

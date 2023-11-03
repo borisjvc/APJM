@@ -46,6 +46,7 @@ export default function Descripcion() {
             {Categoria === "juegos" && (
                 <JuegosDescripcion juego={itemData} />
             )}
+            
             {Categoria === "manga" && (
                 <MangaDescripcion manga={itemData} />
             )}
