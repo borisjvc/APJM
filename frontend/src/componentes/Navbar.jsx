@@ -14,8 +14,7 @@ export default function Navbar() {
     }
 
     const handleSearch = () => {
-        // You can implement your search logic here using multiple APIs
-        // For simplicity, let's just log the search query for now
+        // Falta implementar la busqueda usando las apis
         console.log('Search Query:', searchQuery);
     }
 
