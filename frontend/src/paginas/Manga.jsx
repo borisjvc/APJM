@@ -3,6 +3,7 @@ import { Pagination, Card, Image } from "semantic-ui-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PlaceholderCard from "../componentes/CardPlaceholder";
+import Footer from "../componentes/Footer";
 
 export default function Manga() {
     const [Mangas, setMangas] = useState([]);
@@ -36,6 +37,7 @@ export default function Manga() {
     };
 
     return (
+        <>
         <div>
             <br />
             <div>
@@ -83,5 +85,7 @@ export default function Manga() {
                 />
             </div>
         </div >
+        <Footer/>
+        </>
     );
 }

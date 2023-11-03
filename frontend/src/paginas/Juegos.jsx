@@ -3,6 +3,7 @@ import { Pagination, Card, Image } from "semantic-ui-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PlaceholderCard from "../componentes/CardPlaceholder";
+import Footer from "../componentes/Footer";
 
 export default function Juegos() {
     const [juegos, setJuegos] = useState([]);
@@ -36,51 +37,55 @@ export default function Juegos() {
 
 
     return (
-        <div>
-            <div>
-                <Pagination
-                    activePage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePaginationChange}
-                    ellipsisItem={{ content: "..." }}
-                    firstItem={null}
-                    lastItem={null}
-                    siblingRange={1}
-                />
-            </div>
-
-            <br></br>
-            <Card.Group itemsPerRow={5}>
-                {juegos.length > 0
-                    ? juegos.map((juego) => (
-                        <Card
-                            key={juego.id}
-                            color="yellow"
-                            raised
-                            link
-                            className="card-container"
-                            onClick={() => handleCardClick(juego.id)}
-                        >
-                            <Image src={juego.background_image || "https://via.placeholder.com/300x200"} className="card-image" />
-                            <div className="card-title">{juego.name}</div>
-                        </Card>
-                    )) : Array.from({ length: 20 }, (_, index) => (
-                        <PlaceholderCard key={`placeholder-${index}`} />
-                    ))}
-            </Card.Group>
-            <br></br>
+        <>
 
             <div>
-                <Pagination
-                    activePage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePaginationChange}
-                    ellipsisItem={{ content: "..." }}
-                    firstItem={null}
-                    lastItem={null}
-                    siblingRange={1}
-                />
+                <div>
+                    <Pagination
+                        activePage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePaginationChange}
+                        ellipsisItem={{ content: "..." }}
+                        firstItem={null}
+                        lastItem={null}
+                        siblingRange={1}
+                    />
+                </div>
+
+                <br></br>
+                <Card.Group itemsPerRow={5}>
+                    {juegos.length > 0
+                        ? juegos.map((juego) => (
+                            <Card
+                                key={juego.id}
+                                color="yellow"
+                                raised
+                                link
+                                className="card-container"
+                                onClick={() => handleCardClick(juego.id)}
+                            >
+                                <Image src={juego.background_image || "https://via.placeholder.com/300x200"} className="card-image" />
+                                <div className="card-title">{juego.name}</div>
+                            </Card>
+                        )) : Array.from({ length: 20 }, (_, index) => (
+                            <PlaceholderCard key={`placeholder-${index}`} />
+                        ))}
+                </Card.Group>
+                <br></br>
+
+                <div>
+                    <Pagination
+                        activePage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePaginationChange}
+                        ellipsisItem={{ content: "..." }}
+                        firstItem={null}
+                        lastItem={null}
+                        siblingRange={1}
+                    />
+                </div>
             </div>
-        </div>
+            <Footer/>
+        </>
     );
 }

@@ -4,6 +4,7 @@ import axios from "axios";
 import AnimeDescripcion from "../componentes/AnimeDescripcion";
 import JuegosDescripcion from "../componentes/JuegosDescripcion";
 import MangaDescripcion from "../componentes/MangaDescripcion";
+import Footer from "../componentes/Footer";
 
 export default function Descripcion() {
     const { Categoria, Id } = useParams();
@@ -38,18 +39,21 @@ export default function Descripcion() {
 
     //poner más informacion, animes recomendados abajo o animes random, agregar trivia 
     return (
-        <div className="descripcion-container">
-            {Categoria === "anime" && (
-                <AnimeDescripcion anime={itemData} />
-            )}
+        <>
+            <div className="descripcion-container">
+                {Categoria === "anime" && (
+                    <AnimeDescripcion anime={itemData} />
+                )}
 
-            {Categoria === "juegos" && (
-                <JuegosDescripcion juego={itemData} />
-            )}
-            
-            {Categoria === "manga" && (
-                <MangaDescripcion manga={itemData} />
-            )}
-        </div>
+                {Categoria === "juegos" && (
+                    <JuegosDescripcion juego={itemData} />
+                )}
+
+                {Categoria === "manga" && (
+                    <MangaDescripcion manga={itemData} />
+                )}
+            </div>
+            <Footer />
+        </>
     );
 }
