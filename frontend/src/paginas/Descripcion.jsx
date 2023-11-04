@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import AnimeDescripcion from "../componentes/AnimeDescripcion";
-import JuegosDescripcion from "../componentes/JuegosDescripcion";
-import MangaDescripcion from "../componentes/MangaDescripcion";
+import AnimeDescripcion from "../componentes/Descripcion/AnimeDescripcion";
+import JuegosDescripcion from "../componentes/Descripcion/JuegosDescripcion";
+import MangaDescripcion from "../componentes/Descripcion/MangaDescripcion";
 import Footer from "../componentes/Footer";
-import PeliculasDescripcion from "../componentes/PeliculasDescripcion";
+import PeliculasDescripcion from "../componentes/Descripcion/PeliculasDescripcion";
 
 export default function Descripcion() {
     const { Categoria, Id } = useParams();

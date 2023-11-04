@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Image } from "semantic-ui-react"
-import PlaceholderCard from "./CardPlaceholder";
+import PlaceholderCard from "../CardPlaceholder";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
