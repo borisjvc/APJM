@@ -22,7 +22,7 @@ export class MangaService {
             const mangaList = response.data;
             return mangaList;
         } catch (error) {
-            throw new Error(`Error al obtener lista de manga: ${error.message}`);
+            throw new Error(`Error al obtener lista de mangas: ${error.message}`);
         }
     }
 
@@ -36,7 +36,7 @@ export class MangaService {
             const mangaInfo = response.data;
             return mangaInfo;
         } catch (error) {
-            throw new Error(`Error al obtener información del manga: ${error.message}`)
+            throw new Error(`Error al obtener datos del manga: ${error.message}`)
         }
 
     }

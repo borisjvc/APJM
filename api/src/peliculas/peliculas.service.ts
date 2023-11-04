@@ -3,6 +3,8 @@ import axios from 'axios';
 
 @Injectable()
 export class PeliculasService {
+    private readonly apiKey = '174aa06026msh011534ebd880cdfp152733jsnd5a6ad656f65';
+
     async fetchMovies(page: number) {
         try {
             const response = await axios.get('https://moviesdatabase.p.rapidapi.com/titles', {
@@ -13,13 +15,47 @@ export class PeliculasService {
                     page,
                 },
                 headers: {
-                    'X-RapidAPI-Key': "174aa06026msh011534ebd880cdfp152733jsnd5a6ad656f65",
+                    'X-RapidAPI-Key': this.apiKey,
                     'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
                 },
             });
             return response.data.results;
         } catch (error) {
-            throw error;
+            throw new Error(`Error al obtener lista de peliculas: ${error.message}`);
+        }
+    }
+
+    async getMovieById(id: string) {
+        try {
+            const response = await axios.get(`https://moviesdatabase.p.rapidapi.com/titles/${id}`, {
+                params: {
+                    info: 'base_info',
+                },
+                headers: {
+                    'X-RapidAPI-Key': this.apiKey,
+                    'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
+                },
+            });
+            return response.data.results;
+        } catch (error) {
+            throw new Error(`Error al obtener lista de peliculas: ${error.message}`);
+        }
+    }
+
+    async getRandomMovies() {
+        try {
+            const response = await axios.get(`https://moviesdatabase.p.rapidapi.com/titles/random`, {
+                params: {
+                    list: 'most_pop_movies',
+                },
+                headers: {
+                    'X-RapidAPI-Key': this.apiKey,
+                    'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
+                },
+            });
+            return response.data.results;
+        } catch (error) {
+            throw new Error(`Error al obtener lista de peliculas random: ${error.message}`);
         }
     }
 }

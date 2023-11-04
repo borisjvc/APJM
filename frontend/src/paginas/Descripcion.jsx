@@ -5,6 +5,7 @@ import AnimeDescripcion from "../componentes/AnimeDescripcion";
 import JuegosDescripcion from "../componentes/JuegosDescripcion";
 import MangaDescripcion from "../componentes/MangaDescripcion";
 import Footer from "../componentes/Footer";
+import PeliculasDescripcion from "../componentes/PeliculasDescripcion";
 
 export default function Descripcion() {
     const { Categoria, Id } = useParams();
@@ -20,7 +21,7 @@ export default function Descripcion() {
                 } else if (Categoria === "manga") {
                     response = await axios.get(`http://localhost:3001/manga/getById?id=${Id}`);
                 } else if (Categoria === "peliculas") {
-                    response = await axios.get(`http://your-movies-api-url/${Id}`);
+                    response = await axios.get(`http://localhost:3001/movies/getById?id=${Id}`);
                 } else if (Categoria === "juegos") {
                     response = await axios.get(`http://localhost:3001/games/getById?id=${Id}`);
                 }
@@ -34,10 +35,10 @@ export default function Descripcion() {
     }, [Categoria, Id]);
 
     if (!itemData) {
-        return <div>Loading...</div>;
+        return <div>Error al cargar los datos</div>;
     }
 
-    //poner más informacion, animes recomendados abajo o animes random, agregar trivia 
+    //agregar trivia 
     return (
         <>
             <div className="descripcion-container">
@@ -51,6 +52,10 @@ export default function Descripcion() {
 
                 {Categoria === "manga" && (
                     <MangaDescripcion manga={itemData} />
+                )}
+
+                {Categoria === "peliculas" && (
+                    <PeliculasDescripcion pelicula={itemData} />
                 )}
             </div>
             <Footer />

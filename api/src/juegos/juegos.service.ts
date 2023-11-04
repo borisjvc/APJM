@@ -17,7 +17,7 @@ export class JuegosService {
 
             return response.data.results;
         } catch (error) {
-            throw error;
+            throw new Error(`Error al obtener lista de juegos: ${error.message}`);
         }
     }
 
@@ -26,7 +26,7 @@ export class JuegosService {
             const response = await axios.get(`https://api.rawg.io/api/games/${id}?key=${this.apiKey}`);
             return response.data;
         } catch (error) {
-            throw error;
+            throw new Error(`Error al obtener datos del juego: ${error.message}`);
         }
     }
 }

@@ -13,7 +13,7 @@ export default function Peliculas() {
 
     const fetchMovies = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/movies/${currentPage}`);
+            const response = await axios.get(`http://localhost:3001/movies/list?page=${currentPage}`);
             const newMovies = response.data;
             setPeliculas(newMovies);
         } catch (error) {
