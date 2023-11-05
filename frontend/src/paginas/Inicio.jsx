@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Button, Card, Image } from "semantic-ui-react";
 import axios from "axios";
 import PlaceholderCard from "../componentes/CardPlaceholder";
+import { useNavigate } from "react-router-dom";
 
 export default function Inicio() {
     const [peliculas, setPeliculas] = useState([]);
     const [juegos, setJuegos] = useState([]);
     const [Animes, setAnimes] = useState([]);
     const [Mangas, setMangas] = useState([]);
+    const navigate = useNavigate();
     
+    const handleCardClick = (Id, tipo) => {
+        navigate(`/descripcion/${tipo}/${Id}`);
+    };
 
     const fetchMovies = async () => {
         try {
@@ -101,7 +106,7 @@ export default function Inicio() {
                                 raised
                                 link
                                 className="card-container"
-                                onClick={() => handleCardClick(pelicula.id)}
+                                onClick={() => handleCardClick(pelicula.id, "peliculas")}
                             >
                                 <Image src={pelicula.primaryImage ? pelicula.primaryImage.url : "https://via.placeholder.com/300x500"} className="card-image" />
                                 <div className="card-title">{pelicula.titleText.text}</div>
@@ -122,7 +127,7 @@ export default function Inicio() {
                                 raised
                                 link
                                 className="card-container"
-                                onClick={() => handleCardClick(anime.id)}
+                                onClick={() => handleCardClick(anime.id, "anime")}
                             >
                                 <Image src={anime.coverImage.large || 'https://via.placeholder.com/300x200'} className="card-image" />
                                 <div className="card-title">{anime.title.romaji}</div>
@@ -144,7 +149,7 @@ export default function Inicio() {
                             raised
                             link
                             className="card-container"
-                            onClick={() => handleCardClick(manga.node.id)}
+                            onClick={() => handleCardClick(manga.node.id, "manga")}
                         >
                             <Image src={manga.node.main_picture.large || "https://via.placeholder.com/300x200"} className="card-image" />
                             <div className="card-title">{manga.node.title}</div>
@@ -164,7 +169,7 @@ export default function Inicio() {
                                 raised
                                 link
                                 className="card-container"
-                                onClick={() => handleCardClick(juego.id)}
+                                onClick={() => handleCardClick(juego.id, "juegos")}
                             >
                                 <Image src={juego.background_image || "https://via.placeholder.com/300x200"} className="card-image" />
                                 <div className="card-title">{juego.name}</div>
