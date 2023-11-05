@@ -62,49 +62,60 @@ export default function Inicio() {
     return (
         <article>
             <div className="banner-destacado">
-                {peliculas.length > 0 && (
-                    <Image
-                        src={peliculas[0].primaryImage ? peliculas[0].primaryImage.url : "https://via.placeholder.com/300x500"}
-                        alt="Película Destacada"
-                        centered
-                        rounded
-                        link
-                        size="medium"
-                        onClick={() => handleCardClick(peliculas[0].id, "peliculas")}
-                    />
-                )}
-                {peliculas.length > 0 && (
-                    <Image
-                        src={peliculas[4].primaryImage ? peliculas[4].primaryImage.url : "https://via.placeholder.com/300x500"}
-                        alt="Película Destacada"
-                        link
-                        centered
-                        rounded
-                        size="medium"
-                        onClick={() => handleCardClick(peliculas[0].id, "peliculas")}
-                    />
-                )}
-                {Animes.length > 0 && (
-                    <Image
-                        src={Animes[0].coverImage.large || "https://via.placeholder.com/300x200"}
-                        alt="Anime Destacado"
-                        centered
-                        rounded
-                        link
-                        size="medium"
-                        onClick={() => handleCardClick(Animes[0].id, "anime")}
-                    />
-                )}
-                {Mangas.length > 0 && (
-                    <Image
-                        src={Mangas[0].node.main_picture.large || "https://via.placeholder.com/300x200"}
-                        alt="Manga Destacado"
-                        centered
-                        rounded
-                        size="medium"
-                        onClick={() => handleCardClick(Mangas[0].node.id, "manga")}
-                    />
-                )}
+                <Card.Group itemsPerRow={4}>
+                    {peliculas.length > 0 && (
+                        <Card
+                            key={peliculas[0].id}
+                            color="yellow"
+                            raised
+                            link
+                            className="card-container"
+                            onClick={() => handleCardClick(peliculas.id, "peliculas")}
+                        >
+                            <Image src={peliculas[0].primaryImage ? peliculas[0].primaryImage.url : "https://via.placeholder.com/300x500"} className="card-image" />
+                            <div className="card-title">{peliculas[0].titleText.text}</div>
+                        </Card>
+                    )}
+                    {peliculas.length > 0 && (
+                        <Card
+                            key={peliculas[1].id}
+                            color="yellow"
+                            raised
+                            link
+                            className="card-container"
+                            onClick={() => handleCardClick(peliculas.id, "peliculas")}
+                        >
+                            <Image src={peliculas[1].primaryImage ? peliculas[1].primaryImage.url : "https://via.placeholder.com/300x500"} className="card-image" />
+                            <div className="card-title">{peliculas[1].titleText.text}</div>
+                        </Card>
+                    )}
+                    {Animes.length > 0 && (
+                        <Card
+                            key={Animes[0].id}
+                            color="yellow"
+                            raised
+                            link
+                            className="card-container"
+                            onClick={() => handleCardClick(Animes[0].id, "anime")}
+                        >
+                            <Image src={Animes[0].coverImage.large || 'https://via.placeholder.com/300x200'} className="card-image" />
+                            <div className="card-title">{Animes[0].title.romaji}</div>
+                        </Card>
+                    )}
+                    {Mangas.length > 0 && (
+                        <Card
+                            key={Mangas[0].node.id}
+                            color="yellow"
+                            raised
+                            link
+                            className="card-container"
+                            onClick={() => handleCardClick(Mangas[0].node.id, "manga")}
+                        >
+                            <Image src={Mangas[0].node.main_picture.large || "https://via.placeholder.com/300x200"} className="card-image" />
+                            <div className="card-title">{Mangas[0].node.title}</div>
+                        </Card>
+                    )}
+                </Card.Group>
             </div>
             <br></br>
             <h1>Animes</h1>
