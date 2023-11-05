@@ -24,6 +24,9 @@ export default function AnimeDescripcion({ anime }) {
                 <p>Genero: {anime.genres.join(", ")}</p>
 
             </aside>
+
+            <div className="vertical-line"></div>
+
             <article className="middle-article">
                 <h1 className="description-title">{anime.title.romaji}</h1>
                 <h2>Sinopsis: </h2>

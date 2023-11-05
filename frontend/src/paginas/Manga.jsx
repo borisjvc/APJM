@@ -71,6 +71,7 @@ export default function Manga() {
                         <PlaceholderCard key={`placeholder-${index}`} />
                     ))}
             </Card.Group>
+
             <br></br>
             <br />
             <div>

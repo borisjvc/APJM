@@ -5,14 +5,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function PeliculasDescripcion({ pelicula }) {
-    const [random, setRandom] = useState([]);
+    const [random, setPeliculas] = useState([]);
     const navigate = useNavigate();
 
     const genresList = pelicula.genres.genres.map(genre => genre.text).join(', ');
 
     const fetchData = async () => {
         const response = await axios.get(`http://localhost:3001/movies/random`);
-        setRandom(response.data);
+        setPeliculas(response.data);
     };
 
     useEffect(() => {
@@ -20,8 +20,10 @@ export default function PeliculasDescripcion({ pelicula }) {
     }, [])
 
     const handleCardClick = (Id) => {
+        fetchPeliculas();
+        setPeliculas([]);
         navigate(`/descripcion/peliculas/${Id}`);
-        fetchData();
+
     };
 
     return (
@@ -38,6 +40,9 @@ export default function PeliculasDescripcion({ pelicula }) {
                 <p>Género: {genresList}</p>
 
             </aside>
+
+            <div className="vertical-line"></div>
+
             <article className="middle-article">
                 <h1 className="description-title">{pelicula.titleText.text}</h1>
                 <h2>Descripción: </h2>

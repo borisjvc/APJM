@@ -9,10 +9,12 @@ export class PeliculasService {
         try {
             const response = await axios.get('https://moviesdatabase.p.rapidapi.com/titles', {
                 params: {
-                    endYear: '2022',
+                    endYear: '2023',
                     info: 'mini_info',
                     startYear: '1990',
                     page,
+                    titleType: 'movie',
+                    sort: 'year.decr',
                 },
                 headers: {
                     'X-RapidAPI-Key': this.apiKey,

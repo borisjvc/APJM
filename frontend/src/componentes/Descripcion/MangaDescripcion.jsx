@@ -12,7 +12,7 @@ export default function MangaDescripcion({ manga }) {
     return (
         <>
             <aside className="left-aside">
-                <img src={manga.main_picture.large} alt={manga.title} />
+                <img src={manga.main_picture.large} alt={manga.title} className="manga-image"/>
                 <br></br>
                 <br></br>
                 <Button content="Ver más tarde" icon='bookmark' labelPosition='left' compact color="blue" />
@@ -42,10 +42,11 @@ export default function MangaDescripcion({ manga }) {
                             color="yellow"
                             raised
                             link
+                            fluid='false'
                             className="card-container"
                             onClick={() => handleCardClick(relatedManga.node.id)}
                         >
-                            <Image src={relatedManga.node.main_picture.large || "https://via.placeholder.com/300x200"} alt={relatedManga.node.title} className="card-image" />
+                            <Image src={relatedManga.node.main_picture.large || "https://via.placeholder.com/300x200"} alt={relatedManga.node.title || "no_title"} className="card-image" />
                             <div className="card-title">{relatedManga.node.title}</div>
                         </Card>
                     ))}
