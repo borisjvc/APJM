@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Radio, Button } from "semantic-ui-react";
+import Footer from "../componentes/Footer";
 
 const decodeHTML = (html) => {
     const txt = document.createElement("textarea");
@@ -64,54 +65,58 @@ export default function Trivia() {
     };
 
     return (
-        <div>
-            <h1>Trivia</h1>
-            {preguntas.length > 0 && preguntaActual < preguntas.length && (
-                <Card style={cardStyle}>
-                    <Card.Content>
-                        <Card.Header>
-                            {decodeHTML(preguntas[preguntaActual].question)}
-                        </Card.Header>
-                    </Card.Content>
-                    <Card.Content>
-                        <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
-                            {[...preguntas[preguntaActual].incorrect_answers, preguntas[preguntaActual].correct_answer].map(
-                                (respuesta, respuestaIndex) => (
-                                    <li key={respuestaIndex}>
-                                        <Radio
-                                            label={decodeHTML(respuesta)}
-                                            name={`pregunta${preguntaActual}`}
-                                            value={respuesta}
-                                            checked={respuestasUsuario[preguntaActual] === respuesta}
-                                            onChange={() => handleRespuestaChange(respuesta)}
-                                        />
-                                    </li>
-                                )
-                            )}
+        <>
+            <div>
+                <h1>Trivia</h1>
+                {preguntas.length > 0 && preguntaActual < preguntas.length && (
+                    <Card style={cardStyle}>
+                        <Card.Content>
+                            <Card.Header>
+                                {decodeHTML(preguntas[preguntaActual].question)}
+                            </Card.Header>
+                        </Card.Content>
+                        <Card.Content>
+                            <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
+                                {[...preguntas[preguntaActual].incorrect_answers, preguntas[preguntaActual].correct_answer].map(
+                                    (respuesta, respuestaIndex) => (
+                                        <li key={respuestaIndex}>
+                                            <Radio
+                                                label={decodeHTML(respuesta)}
+                                                name={`pregunta${preguntaActual}`}
+                                                value={respuesta}
+                                                checked={respuestasUsuario[preguntaActual] === respuesta}
+                                                onChange={() => handleRespuestaChange(respuesta)}
+                                            />
+                                        </li>
+                                    )
+                                )}
+                            </ul>
+                        </Card.Content>
+                        {resultado[preguntaActual] !== undefined ? (
+                            <div style={{ textAlign: "center" }}>
+                                <p>Respuesta: {resultado[preguntaActual] ? "Correcta" : "Incorrecta"}</p>
+                                <Button color="yellow" onClick={siguientePregunta}>Siguiente Pregunta</Button>
+                            </div>
+                        ) : (
+                            <Button color="green" onClick={verificarRespuesta}>Verificar Respuesta</Button>
+                        )}
+                    </Card>
+                )}
+                {preguntaActual === preguntas.length && (
+                    <div>
+                        <h2>Resultado Final:</h2>
+                        <ul>
+                            {preguntas.map((pregunta, index) => (
+                                <li key={index}>
+                                    Pregunta {index + 1}: {resultado[index] ? "Correcta" : "Incorrecta"}
+                                </li>
+                            ))}
                         </ul>
-                    </Card.Content>
-                    {resultado[preguntaActual] !== undefined ? (
-                        <div style={{ textAlign: "center" }}>
-                            <p>Respuesta: {resultado[preguntaActual] ? "Correcta" : "Incorrecta"}</p>
-                            <Button color="yellow" onClick={siguientePregunta}>Siguiente Pregunta</Button>
-                        </div>
-                    ) : (
-                        <Button color="green" onClick={verificarRespuesta}>Verificar Respuesta</Button>
-                    )}
-                </Card>
-            )}
-            {preguntaActual === preguntas.length && (
-                <div>
-                    <h2>Resultado Final:</h2>
-                    <ul>
-                        {preguntas.map((pregunta, index) => (
-                            <li key={index}>
-                                Pregunta {index + 1}: {resultado[index] ? "Correcta" : "Incorrecta"}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-        </div>
+                    </div>
+                )}
+            </div>
+
+            <Footer />
+        </>
     );
 }

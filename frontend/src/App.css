@@ -107,9 +107,6 @@ li{
   background-color: #22211F;
   color: white;
   padding: 35px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -117,7 +114,6 @@ li{
 
 .footer-content {
   width: 100%;
-  max-width: 1600px;
   display: flex;
   justify-content: space-between;
 }
