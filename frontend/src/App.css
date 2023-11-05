@@ -11,7 +11,24 @@ header {
   margin-bottom: 20px;
 }
 
+h1{
+  color:#4f9bd5
+}
 
+h2{
+  color:#4f9bd5
+}
+
+li{
+  color: white
+}
+
+.banner-destacado {
+  display: flex; /* Muestra las imágenes en línea */
+  justify-content: space-between; /* Espacio igual entre las imágenes */
+  align-items: center; /* Centra verticalmente las imágenes */
+  margin-bottom: 20px; /* Espacio inferior para separar el banner del contenido */
+}
 
 /* Navbar css*/
 .topnav {

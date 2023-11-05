@@ -10,7 +10,7 @@ export default function Inicio() {
     const [Animes, setAnimes] = useState([]);
     const [Mangas, setMangas] = useState([]);
     const navigate = useNavigate();
-    
+
     const handleCardClick = (Id, tipo) => {
         navigate(`/descripcion/${tipo}/${Id}`);
     };
@@ -62,81 +62,71 @@ export default function Inicio() {
     return (
         <article>
             <div className="banner-destacado">
-                <Image
-                    src="https://www.themoviedb.org/t/p/w1280/NNxYkU70HPurnNCSiCjYAmacwm.jpg"
-                    alt="Película Destacada"
-                    centered
-                    rounded
-                    size="medium"
-                    href="/anime/a"
-                ></Image>
-                <Image
-                    src="https://www.themoviedb.org/t/p/w1280/2urdwqEL9FRkGMKAkhfvWTALG00.jpg"
-                    alt="Película Destacada"
-                    centered
-                    rounded
-                    size="medium"
-                    href="/anime/a"
-                ></Image>
-                <Image
-                    src="https://www.themoviedb.org/t/p/w1280/8Im6DknDVxRiGXc5t8rVOJyzuNx.jpg"
-                    alt="Película Destacada"
-                    centered
-                    rounded
-                    size="medium"
-                    href="/anime/a"
-                ></Image>
-                <Image
-                    src="https://www.themoviedb.org/t/p/w1280/voHUmluYmKyleFkTu3lOXQG702u.jpg"
-                    alt="Película Destacada"
-                    centered
-                    rounded
-                    size="medium"
-                    href="/anime/a"
-                ></Image>
+                {peliculas.length > 0 && (
+                    <Image
+                        src={peliculas[0].primaryImage ? peliculas[0].primaryImage.url : "https://via.placeholder.com/300x500"}
+                        alt="Película Destacada"
+                        centered
+                        rounded
+                        link
+                        size="medium"
+                        onClick={() => handleCardClick(peliculas[0].id, "peliculas")}
+                    />
+                )}
+                {peliculas.length > 0 && (
+                    <Image
+                        src={peliculas[4].primaryImage ? peliculas[4].primaryImage.url : "https://via.placeholder.com/300x500"}
+                        alt="Película Destacada"
+                        link
+                        centered
+                        rounded
+                        size="medium"
+                        onClick={() => handleCardClick(peliculas[0].id, "peliculas")}
+                    />
+                )}
+                {Animes.length > 0 && (
+                    <Image
+                        src={Animes[0].coverImage.large || "https://via.placeholder.com/300x200"}
+                        alt="Anime Destacado"
+                        centered
+                        rounded
+                        link
+                        size="medium"
+                        onClick={() => handleCardClick(Animes[0].id, "anime")}
+                    />
+                )}
+                {Mangas.length > 0 && (
+                    <Image
+                        src={Mangas[0].node.main_picture.large || "https://via.placeholder.com/300x200"}
+                        alt="Manga Destacado"
+                        centered
+                        rounded
+                        size="medium"
+                        onClick={() => handleCardClick(Mangas[0].node.id, "manga")}
+                    />
+                )}
             </div>
-            <br></br>
-            <h1>Peliculas</h1>
-            <Card.Group itemsPerRow={5}>
-                    {peliculas.length > 0
-                        ? peliculas.map((pelicula) => (
-                            <Card
-                                key={pelicula.id}
-                                color="yellow"
-                                raised
-                                link
-                                className="card-container"
-                                onClick={() => handleCardClick(pelicula.id, "peliculas")}
-                            >
-                                <Image src={pelicula.primaryImage ? pelicula.primaryImage.url : "https://via.placeholder.com/300x500"} className="card-image" />
-                                <div className="card-title">{pelicula.titleText.text}</div>
-                            </Card>
-                        ))
-                        : Array.from({ length: 10 }, (_, index) => (
-                            <PlaceholderCard key={`placeholder-${index}`} />
-                        ))}
-            </Card.Group>
             <br></br>
             <h1>Animes</h1>
             <Card.Group itemsPerRow={5}>
-                    {Animes.length > 0
-                        ? Animes.map((anime) => (
-                            <Card
-                                key={anime.id}
-                                color="yellow"
-                                raised
-                                link
-                                className="card-container"
-                                onClick={() => handleCardClick(anime.id, "anime")}
-                            >
-                                <Image src={anime.coverImage.large || 'https://via.placeholder.com/300x200'} className="card-image" />
-                                <div className="card-title">{anime.title.romaji}</div>
-                            </Card>
-                        ))
-                        : Array.from({ length: 20 }, (_, index) => (
-                            <PlaceholderCard key={`placeholder-${index}`} /> 
-                        ))}
-                </Card.Group>
+                {Animes.length > 0
+                    ? Animes.map((anime) => (
+                        <Card
+                            key={anime.id}
+                            color="yellow"
+                            raised
+                            link
+                            className="card-container"
+                            onClick={() => handleCardClick(anime.id, "anime")}
+                        >
+                            <Image src={anime.coverImage.large || 'https://via.placeholder.com/300x200'} className="card-image" />
+                            <div className="card-title">{anime.title.romaji}</div>
+                        </Card>
+                    ))
+                    : Array.from({ length: 20 }, (_, index) => (
+                        <PlaceholderCard key={`placeholder-${index}`} />
+                    ))}
+            </Card.Group>
             <br></br>
 
             <h1>Mangas</h1>
@@ -158,26 +148,48 @@ export default function Inicio() {
                         <PlaceholderCard key={`placeholder-${index}`} />
                     ))}
             </Card.Group>
-            <br/>
+            <br />
+
+            <h1>Peliculas</h1>
+            <Card.Group itemsPerRow={5}>
+                {peliculas.length > 0
+                    ? peliculas.map((pelicula) => (
+                        <Card
+                            key={pelicula.id}
+                            color="yellow"
+                            raised
+                            link
+                            className="card-container"
+                            onClick={() => handleCardClick(pelicula.id, "peliculas")}
+                        >
+                            <Image src={pelicula.primaryImage ? pelicula.primaryImage.url : "https://via.placeholder.com/300x500"} className="card-image" />
+                            <div className="card-title">{pelicula.titleText.text}</div>
+                        </Card>
+                    ))
+                    : Array.from({ length: 10 }, (_, index) => (
+                        <PlaceholderCard key={`placeholder-${index}`} />
+                    ))}
+            </Card.Group>
+            <br></br>
             <h1>Juegos</h1>
             <Card.Group itemsPerRow={5}>
-                    {juegos.length > 0
-                        ? juegos.map((juego) => (
-                            <Card
-                                key={juego.id}
-                                color="yellow"
-                                raised
-                                link
-                                className="card-container"
-                                onClick={() => handleCardClick(juego.id, "juegos")}
-                            >
-                                <Image src={juego.background_image || "https://via.placeholder.com/300x200"} className="card-image" />
-                                <div className="card-title">{juego.name}</div>
-                            </Card>
-                        )) : Array.from({ length: 20 }, (_, index) => (
-                            <PlaceholderCard key={`placeholder-${index}`} />
-                        ))}
-                </Card.Group>
+                {juegos.length > 0
+                    ? juegos.map((juego) => (
+                        <Card
+                            key={juego.id}
+                            color="yellow"
+                            raised
+                            link
+                            className="card-container"
+                            onClick={() => handleCardClick(juego.id, "juegos")}
+                        >
+                            <Image src={juego.background_image || "https://via.placeholder.com/300x200"} className="card-image" />
+                            <div className="card-title">{juego.name}</div>
+                        </Card>
+                    )) : Array.from({ length: 20 }, (_, index) => (
+                        <PlaceholderCard key={`placeholder-${index}`} />
+                    ))}
+            </Card.Group>
         </article>
     )
 }

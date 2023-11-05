@@ -26,6 +26,7 @@ export default function Navbar() {
                 <a href="/juegos">Videojuegos</a>
                 <a href="/anime">Anime</a>
                 <a href="/manga">Manga</a>
+                <a href='/trivia'>Trivia</a>
                 <div style={{ float: 'right' }}>
                     <a href="/login">
                         <Icon link size='large' name='user outline' />
