@@ -12,6 +12,7 @@ import Descripcion from './paginas/Descripcion';
 
 function App() {
   const router = createBrowserRouter([
+    
     {
       path: "/",
       element: <Inicio />
