@@ -11,7 +11,7 @@ export class AnimeController {
         return animeList;
     }
 
-    @Get('getAnimeById')
+    @Get('getById')
     async getAnimeById(@Query('id') id: number) {
         return this.animeService.getAnimeById(id);
     }

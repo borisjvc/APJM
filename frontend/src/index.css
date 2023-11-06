@@ -64,3 +64,9 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.vertical-line {
+  border-left: 1px solid #ccc; /* Adjust the border style, color, and width as needed */
+  height: 100%; /* Make the line as tall as the content */
+  margin-left: 20px; /* Adjust the margin as needed to create spacing between the line and content */
+}

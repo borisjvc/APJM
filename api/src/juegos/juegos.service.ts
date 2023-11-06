@@ -3,31 +3,30 @@ import axios from 'axios';
 
 @Injectable()
 export class JuegosService {
-
+    private readonly apiKey = '2c4b96636c7e4ca2ba106024b589569f';
 
     async getGames(page: number) {
-        const apiKey = '2c4b96636c7e4ca2ba106024b589569f';
+
         try {
             let response;
             if (page < 2) {
-                response = await axios.get(`https://api.rawg.io/api/games?key=${apiKey}`);
+                response = await axios.get(`https://api.rawg.io/api/games?key=${this.apiKey}`);
             } else {
-                response = await axios.get(`https://api.rawg.io/api/games?key=${apiKey}&page=${page}`);
+                response = await axios.get(`https://api.rawg.io/api/games?key=${this.apiKey}&page=${page}`);
             }
 
             return response.data.results;
         } catch (error) {
-            throw error;
+            throw new Error(`Error al obtener lista de juegos: ${error.message}`);
         }
     }
 
     async getGamesById(id: number) {
-        const apiKey = '2c4b96636c7e4ca2ba106024b589569f';
         try {
-            const response = await axios.get(`https://api.rawg.io/api/games/${id}?key=${apiKey}`);
+            const response = await axios.get(`https://api.rawg.io/api/games/${id}?key=${this.apiKey}`);
             return response.data;
         } catch (error) {
-            throw error;
+            throw new Error(`Error al obtener datos del juego: ${error.message}`);
         }
     }
 }

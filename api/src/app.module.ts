@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JuegosController } from './juegos/juegos.controller';
@@ -12,6 +10,8 @@ import { MangaService } from './manga/manga.service';
 import { PeliculasController } from './peliculas/peliculas.controller';
 import { PeliculasService } from './peliculas/peliculas.service';
 import { JuegosService } from './juegos/juegos.service';
+import { TriviaController } from './trivia/trivia.controller';
+import { TriviaService } from './trivia/trivia.service';
 
 @Module({
   imports: [
@@ -26,7 +26,7 @@ import { JuegosService } from './juegos/juegos.service';
     synchronize: true
     }),
   UsersModule, HttpModule],
-  controllers: [AppController, JuegosController, AnimeController, MangaController, PeliculasController],
-  providers: [AppService, AnimeService, MangaService, PeliculasService, JuegosService],
+  controllers: [JuegosController, AnimeController, MangaController, PeliculasController, TriviaController],
+  providers: [AnimeService, MangaService, PeliculasService, JuegosService, TriviaService],
 })
 export class AppModule {}

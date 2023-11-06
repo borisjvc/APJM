@@ -7,19 +7,20 @@ export class AnimeService {
 
   async getAnimeList(page: number) {
     const query = `
-      query {
-        Page(page: ${page}, perPage: 20) {
-          media(type: ANIME) {
-            id
-            title {
-              romaji
-            }
-            coverImage {
-              large
-            }
+    query {
+      Page(page: ${page}, perPage: 20) {
+        media(type: ANIME, sort: START_DATE_DESC, status_not: NOT_YET_RELEASED, isAdult: false, popularity_greater: 10000 ) {
+          id
+          title {
+            romaji
+          }
+          coverImage {
+            large
           }
         }
       }
+    }
+    
     `;
 
     try {
@@ -27,7 +28,7 @@ export class AnimeService {
       const animeList = response.data.data.Page.media;
       return animeList;
     } catch (error) {
-      throw new Error(`Failed to fetch anime list: ${error.message}`);
+      throw new Error(`Error al obtener lista de animes: ${error.message}`);
     }
   }
 
@@ -39,18 +40,35 @@ export class AnimeService {
           title {
             romaji
           }
-          description
           coverImage {
             large
           }
           startDate {
             year
-          } 
+            month
+            day
+          }
           status
           episodes
           genres
-        }
-      }
+          description
+          recommendations {
+            nodes {
+                mediaRecommendation {
+                  id
+                  title{
+                    romaji
+                  }
+                  coverImage {
+                    extraLarge
+                    large
+                  }
+                }
+        
+              }
+            }
+          }
+          }
     `;
 
     try {
@@ -58,7 +76,7 @@ export class AnimeService {
       const animeDetails = response.data.data.Media;
       return animeDetails;
     } catch (error) {
-      throw new Error(`Error al obtener datos: ${error.message}`);
+      throw new Error(`Error al obtener datos del anime: ${error.message}`);
     }
   }
 

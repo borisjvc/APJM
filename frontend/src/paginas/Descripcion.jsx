@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Button } from "semantic-ui-react";
-import AnimeDescripcion from "../componentes/AnimeDescripcion";
-import JuegosDescripcion from "../componentes/JuegosDescripcion";
+import AnimeDescripcion from "../componentes/Descripcion/AnimeDescripcion";
+import JuegosDescripcion from "../componentes/Descripcion/JuegosDescripcion";
+import MangaDescripcion from "../componentes/Descripcion/MangaDescripcion";
+import Footer from "../componentes/Footer";
+import PeliculasDescripcion from "../componentes/Descripcion/PeliculasDescripcion";
 
 export default function Descripcion() {
     const { Categoria, Id } = useParams();
@@ -15,11 +17,11 @@ export default function Descripcion() {
             try {
                 let response;
                 if (Categoria === "anime") {
-                    response = await axios.get(`http://localhost:3001/anime/getAnimeById?id=${Id}`);
+                    response = await axios.get(`http://localhost:3001/anime/getById?id=${Id}`);
                 } else if (Categoria === "manga") {
-                    response = await axios.get(`http://localhost:3001/games/getById?id=${Id}`);
+                    response = await axios.get(`http://localhost:3001/manga/getById?id=${Id}`);
                 } else if (Categoria === "peliculas") {
-                    response = await axios.get(`http://your-movies-api-url/${Id}`);
+                    response = await axios.get(`http://localhost:3001/movies/getById?id=${Id}`);
                 } else if (Categoria === "juegos") {
                     response = await axios.get(`http://localhost:3001/games/getById?id=${Id}`);
                 }
@@ -33,18 +35,30 @@ export default function Descripcion() {
     }, [Categoria, Id]);
 
     if (!itemData) {
-        return <div>Loading...</div>;
+        return <div>Error al cargar los datos</div>;
     }
 
-    //poner más informacion a la derecha, animes recomendados abajo o animes random, agregar trivia 
+    //agregar trivia 
     return (
-        <div className="descripcion-container">
-            {Categoria === "anime" && (
-                <AnimeDescripcion anime={itemData} />
-            )}
-            {Categoria === "juegos" && (
-                <JuegosDescripcion juego={itemData} />
-            )}
-        </div>
+        <>
+            <div className="descripcion-container">
+                {Categoria === "anime" && (
+                    <AnimeDescripcion anime={itemData} />
+                )}
+
+                {Categoria === "juegos" && (
+                    <JuegosDescripcion juego={itemData} />
+                )}
+
+                {Categoria === "manga" && (
+                    <MangaDescripcion manga={itemData} />
+                )}
+
+                {Categoria === "peliculas" && (
+                    <PeliculasDescripcion pelicula={itemData} />
+                )}
+            </div>
+            <Footer />
+        </>
     );
 }

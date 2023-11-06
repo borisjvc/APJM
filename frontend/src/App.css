@@ -11,7 +11,24 @@ header {
   margin-bottom: 20px;
 }
 
+h1{
+  color:#4f9bd5
+}
 
+h2{
+  color:#4f9bd5
+}
+
+li{
+  color: white
+}
+
+.banner-destacado {
+  display: flex; /* Muestra las imágenes en línea */
+  justify-content: space-between; /* Espacio igual entre las imágenes */
+  align-items: center; /* Centra verticalmente las imágenes */
+  margin-bottom: 20px; /* Espacio inferior para separar el banner del contenido */
+}
 
 /* Navbar css*/
 .topnav {
@@ -31,6 +48,18 @@ header {
 .topnav a:hover {
   background-color: #C9A045;
   color: black;
+}
+
+.search-bar {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s ease-in-out;
+}
+
+.search-bar-expanded {
+  width: 30vh;
+  min-width: 200px;
+
 }
 
 /* Cards css */
@@ -78,9 +107,6 @@ header {
   background-color: #22211F;
   color: white;
   padding: 35px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -88,7 +114,6 @@ header {
 
 .footer-content {
   width: 100%;
-  max-width: 1600px;
   display: flex;
   justify-content: space-between;
 }
@@ -137,7 +162,7 @@ header {
 
 /* Descripcion */
 .description-title{
-  color:#6199ed
+  color:#4f9bd5
 }
 .descripcion-container {
   display: flex;
@@ -159,6 +184,22 @@ header {
 }
 
 .game-image{
-  width: 300px;
-  height: 200px;
+  width: 50vh;
+  height: 30vh;
+}
+
+.movie-image{
+  width: 40vh;
+  height: 50vh;
+
+  min-width: 150px;
+  min-height: 250px;
+}
+
+.manga-image{
+  width: 40vh;
+  height: 55vh;
+
+  min-width: 150px;
+  min-height: 250px;
 }

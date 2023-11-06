@@ -1,39 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Loader, Image, Dimmer } from "semantic-ui-react";
+import { Button, Card, Image, Pagination } from "semantic-ui-react";
 import axios from "axios";
 import Footer from "../componentes/Footer";
 import { useNavigate } from "react-router-dom";
+import PlaceholderCard from "../componentes/CardPlaceholder";
 
 export default function Peliculas() {
-    const [isLoading, setLoading] = useState(false);
+    const [totalPages, setTotalPages] = useState(10);
     const [peliculas, setPeliculas] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const navigate = useNavigate();
 
-    const fetchMovies = async (page) => {
+    const fetchMovies = async () => {
         try {
-            setLoading(true);
-            const response = await axios.get(`http://localhost:3001/movies/${currentPage}`);
+            const response = await axios.get(`http://localhost:3001/movies/list?page=${currentPage}`);
             const newMovies = response.data;
             setPeliculas(newMovies);
         } catch (error) {
             console.error(error);
         }
-        setLoading(false);
     };
 
     useEffect(() => {
-        fetchMovies(currentPage);
-    }, [currentPage]);
-
-    const handleNextPage = () => {
-        setCurrentPage(currentPage + 1);
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
+        fetchMovies();
+        if (currentPage >= totalPages) {
+            setTotalPages(currentPage + 10);
         }
+    }, [currentPage, totalPages]);
+
+    const handlePaginationChange = (e, { activePage }) => {
+        setCurrentPage(activePage);
     };
 
     const handleCardClick = (peliculaId) => {
@@ -45,33 +41,48 @@ export default function Peliculas() {
         <>
             <div>
                 <div>
-                    <Button content='Anterior' color='yellow' onClick={handlePrevPage} disabled={currentPage === 1} icon='left chevron' labelPosition='left' />
-                    <Button content='Siguiente' color='yellow' onClick={handleNextPage} icon='right chevron' labelPosition='right' />
+                    <Pagination
+                        activePage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePaginationChange}
+                        ellipsisItem={{ content: "..." }}
+                        firstItem={null}
+                        lastItem={null}
+                        siblingRange={1}
+                    />
                 </div>
-                <br></br>
+                <br />
 
-                <Dimmer active={isLoading} page>
-                    <Loader content="Cargando, por favor espere..." />
-                </Dimmer>
                 <Card.Group itemsPerRow={5}>
-                    {peliculas.map((pelicula) => (
-                        <Card
-                            key={pelicula.id}
-                            color="yellow"
-                            raised
-                            link
-                            className="card-container"
-                            onClick={() => handleCardClick(pelicula.id)}
-                        >
-                            <Image src={pelicula.primaryImage ? pelicula.primaryImage.url : "URL_Predeterminada"} className="card-image" />
-                            <div className="card-title">{pelicula.titleText.text}</div>
-                        </Card>
-                    ))}
+                    {peliculas.length > 0
+                        ? peliculas.map((pelicula) => (
+                            <Card
+                                key={pelicula.id}
+                                color="yellow"
+                                raised
+                                link
+                                className="card-container"
+                                onClick={() => handleCardClick(pelicula.id)}
+                            >
+                                <Image src={pelicula.primaryImage ? pelicula.primaryImage.url : "https://via.placeholder.com/300x500"} className="card-image" />
+                                <div className="card-title">{pelicula.titleText.text}</div>
+                            </Card>
+                        ))
+                        : Array.from({ length: 10 }, (_, index) => (
+                            <PlaceholderCard key={`placeholder-${index}`} />
+                        ))}
                 </Card.Group>
-                <br></br>
+                <br />
                 <div>
-                    <Button content='Anterior' color='yellow' onClick={handlePrevPage} disabled={currentPage === 1} icon='left chevron' labelPosition='left' />
-                    <Button content='Siguiente' color='yellow' onClick={handleNextPage} icon='right chevron' labelPosition='right' />
+                    <Pagination
+                        activePage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePaginationChange}
+                        ellipsisItem={{ content: "..." }}
+                        firstItem={null}
+                        lastItem={null}
+                        siblingRange={1}
+                    />
                 </div>
 
             </div>

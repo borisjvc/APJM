@@ -9,6 +9,8 @@ import Juegos from './paginas/Juegos';
 import Anime from './paginas/Anime';
 import Manga from './paginas/Manga';
 import Descripcion from './paginas/Descripcion';
+import Registro from './paginas/Registro';
+import Trivia from './paginas/Trivia';
 
 function App() {
   const router = createBrowserRouter([
@@ -40,7 +42,15 @@ function App() {
     {
       path: "/login",
       element: <Login />
-    }
+    },
+    {
+      path: "/registro",
+      element: <Registro/>
+    },
+    {
+      path: "/trivia",
+      element: <Trivia/>
+    },
   ])
   return (
     <div>

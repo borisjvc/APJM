@@ -1,38 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Dimmer, Loader, Image } from "semantic-ui-react";
+import { Pagination, Card, Image } from "semantic-ui-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import PlaceholderCard from "../componentes/CardPlaceholder";
+import Footer from "../componentes/Footer";
 
 export default function Manga() {
     const [Mangas, setMangas] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
+    const [totalPages, setTotalPages] = useState(10);
     const navigate = useNavigate();
 
 
     const fetchMangas = async () => {
-        setIsLoading(true);
         try {
             const response = await axios.get(`http://localhost:3001/manga/list?page=${currentPage}`);
             setMangas(response.data.data);
         } catch (error) {
             console.error(error);
         }
-        setIsLoading(false);
     };
 
     useEffect(() => {
         fetchMangas();
-    }, [currentPage]);
-
-    const handleNextPage = () => {
-        setCurrentPage(currentPage + 1);
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
+        if (currentPage >= totalPages) {
+            setTotalPages(currentPage + 10);
         }
+    }, [currentPage, totalPages]);
+
+    const handlePaginationChange = (e, { activePage }) => {
+        setCurrentPage(activePage);
     };
 
     const handleCardClick = (mangaId) => {
@@ -40,35 +37,56 @@ export default function Manga() {
     };
 
     return (
+        <>
         <div>
+            <br />
             <div>
-                <Button content='Anterior' color='yellow' onClick={handlePrevPage} disabled={currentPage === 1} icon='left chevron' labelPosition='left' />
-                <Button content='Siguiente' color='yellow' onClick={handleNextPage} icon='right chevron' labelPosition='right' />
+                <Pagination
+                    activePage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePaginationChange}
+                    ellipsisItem={{ content: "..." }}
+                    firstItem={null}
+                    lastItem={null}
+                    siblingRange={1}
+                />
             </div>
-            <Dimmer active={isLoading} page>
-                <Loader content="Cargando, por favor espere..." />
-            </Dimmer>
+
             <br></br>
             <Card.Group itemsPerRow={5}>
-                {Mangas.map((manga) => (
-                    <Card
-                        key={manga.node.id}
-                        color="yellow"
-                        raised
-                        link
-                        className="card-container"
-                        onClick={() => handleCardClick(manga.node.id)}
-                    >
-                        <Image src={manga.node.main_picture.large || "URL_Predeterminada"} className="card-image" />
-                        <div className="card-title">{manga.node.title}</div>
-                    </Card>
-                ))}
+                {Mangas.length > 0
+                    ? Mangas.map((manga) => (
+                        <Card
+                            key={manga.node.id}
+                            color="yellow"
+                            raised
+                            link
+                            className="card-container"
+                            onClick={() => handleCardClick(manga.node.id)}
+                        >
+                            <Image src={manga.node.main_picture.large || "https://via.placeholder.com/300x200"} className="card-image" />
+                            <div className="card-title">{manga.node.title}</div>
+                        </Card>
+                    )) : Array.from({ length: 20 }, (_, index) => (
+                        <PlaceholderCard key={`placeholder-${index}`} />
+                    ))}
             </Card.Group>
+
             <br></br>
+            <br />
             <div>
-                <Button content='Anterior' color='yellow' onClick={handlePrevPage} disabled={currentPage === 1} icon='left chevron' labelPosition='left' />
-                <Button content='Siguiente' color='yellow' onClick={handleNextPage} icon='right chevron' labelPosition='right' />
+                <Pagination
+                    activePage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePaginationChange}
+                    ellipsisItem={{ content: "..." }}
+                    firstItem={null}
+                    lastItem={null}
+                    siblingRange={1}
+                />
             </div>
         </div >
+        <Footer/>
+        </>
     );
 }

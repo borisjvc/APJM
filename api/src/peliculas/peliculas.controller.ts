@@ -1,16 +1,22 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { PeliculasService } from './peliculas.service';
 
 @Controller('movies')
 export class PeliculasController {
     constructor(private readonly peliculasService: PeliculasService) { }
 
-    @Get(':page')
-    async fetchMovies(@Param('page') page: number) {
-        try {
-            return this.peliculasService.fetchMovies(page);
-        } catch (error) {
-            throw error;
-        }
+    @Get('list')
+    async fetchMovies(@Query('page') page: number) {
+        return await this.peliculasService.fetchMovies(page);
+    }
+
+    @Get('getById')
+    async getMovieById(@Query('id') id: string) {
+        return await this.peliculasService.getMovieById(id);
+    }
+
+    @Get('random')
+    async getRandomMovies() {
+        return await this.peliculasService.getRandomMovies();
     }
 }
