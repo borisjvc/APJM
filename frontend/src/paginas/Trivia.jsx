@@ -11,7 +11,7 @@ const decodeHTML = (html) => {
 
 const cardStyle = {
     maxHeight: "600px",
-    maxWidth: "800px", // Adjust the maximum width as needed
+    maxWidth: "800px", 
     margin: "0 auto",
     textAlign: "left",
 };
