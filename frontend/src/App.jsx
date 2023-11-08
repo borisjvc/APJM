@@ -11,6 +11,7 @@ import Manga from './paginas/Manga';
 import Descripcion from './paginas/Descripcion';
 import Registro from './paginas/Registro';
 import Trivia from './paginas/Trivia';
+import Footer from './componentes/Footer';
 
 function App() {
   const router = createBrowserRouter([

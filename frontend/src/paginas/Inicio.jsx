@@ -72,7 +72,7 @@ export default function Inicio() {
                                 raised
                                 link
                                 className="card-container"
-                                onClick={() => handleCardClick(peliculas.id, "peliculas")}
+                                onClick={() => handleCardClick(peliculas[0].id, "peliculas")}
                             >
                                 <Image src={peliculas[0].primaryImage ? peliculas[0].primaryImage.url : "https://via.placeholder.com/300x500"} className="card-image" />
                                 <div className="card-title">{peliculas[0].titleText.text}</div>
@@ -85,7 +85,7 @@ export default function Inicio() {
                                 raised
                                 link
                                 className="card-container"
-                                onClick={() => handleCardClick(peliculas.id, "peliculas")}
+                                onClick={() => handleCardClick(peliculas[1].id, "peliculas")}
                             >
                                 <Image src={peliculas[1].primaryImage ? peliculas[1].primaryImage.url : "https://via.placeholder.com/300x500"} className="card-image" />
                                 <div className="card-title">{peliculas[1].titleText.text}</div>
