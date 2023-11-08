@@ -12,6 +12,7 @@ import Descripcion from './paginas/Descripcion';
 import Registro from './paginas/Registro';
 import Trivia from './paginas/Trivia';
 import Footer from './componentes/Footer';
+import Usuarios  from './paginas/Dashboard/usuarios';
 
 function App() {
   const router = createBrowserRouter([
@@ -52,6 +53,11 @@ function App() {
       path: "/trivia",
       element: <Trivia/>
     },
+    {
+      path: "/inicio-admin",
+      element: <Usuarios/>
+    },
+    
   ])
   return (
     <div>

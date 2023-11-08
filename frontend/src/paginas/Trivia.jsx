@@ -16,7 +16,7 @@ const cardStyle = {
     textAlign: "left",
 };
 
-
+//agregar tiempo para responder a la pregunta
 export default function Trivia() {
     const [preguntas, setPreguntas] = useState([]);
     const [respuestasUsuario, setRespuestasUsuario] = useState({});

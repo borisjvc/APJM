@@ -65,3 +65,11 @@ button:focus-visible {
   height: 100%; /* Make the line as tall as the content */
   margin-left: 20px; /* Adjust the margin as needed to create spacing between the line and content */
 }
+
+h1{
+  color:rgb(211, 213, 79);
+  display: block;
+  font-size: 4em;
+  font-weight: bold;
+  margin: 2rem 0 2rem;
+}
