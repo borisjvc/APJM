@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JuegosController } from './juegos/juegos.controller';
 import { HttpModule } from '@nestjs/axios';
@@ -12,6 +11,7 @@ import { PeliculasService } from './peliculas/peliculas.service';
 import { JuegosService } from './juegos/juegos.service';
 import { TriviaController } from './trivia/trivia.controller';
 import { TriviaService } from './trivia/trivia.service';
+import { UsuariosModule } from './Usuarios/users.module';
 
 @Module({
   imports: [
@@ -21,12 +21,11 @@ import { TriviaService } from './trivia/trivia.service';
     port: 3306,
     username: 'root',
     password: '',
-    database: 'nestjsdb',
+    database: 'kurosagi',
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true
-    }),
-  UsersModule, HttpModule],
+    }), UsuariosModule, HttpModule],
   controllers: [JuegosController, AnimeController, MangaController, PeliculasController, TriviaController],
   providers: [AnimeService, MangaService, PeliculasService, JuegosService, TriviaService],
-})
+}) //convertir en modulos
 export class AppModule {}
