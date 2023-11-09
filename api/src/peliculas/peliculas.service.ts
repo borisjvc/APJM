@@ -8,9 +8,6 @@ export class PeliculasService {
     async fetchMovies(page: number) {
         try {
             let response;
-            if(page < 2){
-                response = await axios.get("http://localhost:3001/")
-            }
             response = await axios.get('https://moviesdatabase.p.rapidapi.com/titles', {
                 params: {
                     endYear: '2023',

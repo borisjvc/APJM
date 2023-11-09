@@ -12,6 +12,10 @@ import Descripcion from './paginas/Descripcion';
 import Registro from './paginas/Registro';
 import Trivia from './paginas/Trivia';
 import Usuarios from './paginas/Dashboard/Dashboard_Usuarios';
+import DashPeliculas from './paginas/Dashboard/Dashboard_Peliculas';
+import DashJuegos from './paginas/Dashboard/Dashboard_Juegos';
+import DashAnime from './paginas/Dashboard/Dashboard_Anime';
+import DashManga from './paginas/Dashboard/Dashboard_Manga';
 
 function App() {
   const router = createBrowserRouter([
@@ -56,9 +60,26 @@ function App() {
       path: "/inicio-admin",
       element: <Usuarios/>
     },
+    {
+      path: "/Dashboard_Peliculas",
+      element: <DashPeliculas/>
+    },
+    {
+      path: "/Dashboard_Anime",
+      element: <DashAnime/>
+    },
+    {
+      path: "/Dashboard_Juegos",
+      element: <DashJuegos/>
+    },
+    {
+      path: "/Dashboard_Manga",
+      element: <DashManga/>
+    },
     
   ])
   return (
+
     <div>
         <Navbar />
         <RouterProvider router={router} />

@@ -16,7 +16,14 @@ export default function Usuarios() {
     useEffect(() => {
         axios.get("http://localhost:3001/usuarios")
             .then((response) => {
-                setUsuarios(response.data); // Almacena los datos de usuarios en el estado
+                const formattedUsers = response.data.map((user) => ({
+                    id: user.ID,
+                    username: user.Username,
+                    email: user.Email,
+                    rol: user.Rol,
+                }));
+
+                setUsuarios(formattedUsers);
             })
             .catch((error) => {
                 console.error("Error al obtener usuarios: ", error);

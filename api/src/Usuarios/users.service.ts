@@ -9,7 +9,7 @@ export class UsuariosService {
     constructor(
         @InjectRepository(Usuario)
         private readonly usuarioRepository: Repository<Usuario>,
-        private readonly connection: Connection, // Inyecta la conexión a la base de datos
+        private readonly connection: Connection, // conexión a la base de datos
     ) { }
 
     async crearUsuario(username: string, passwrd: string, email: string, rol: string): Promise<Usuario> {
@@ -28,7 +28,7 @@ export class UsuariosService {
             await queryRunner.release();
         }
 
-        // Devolver el usuario creado (puedes ajustar esto según tu necesidad)
+        // Devolver el usuario creado 
         const newUser = new Usuario();
         newUser.Username = username;
         newUser.Passwrd = passwrd;
@@ -46,7 +46,7 @@ export class UsuariosService {
     async obtenerUsuarios(): Promise<Usuario[]> {
         // Llamar al procedimiento almacenado para obtener todos los usuarios
         const result = await this.usuarioRepository.query('CALL ObtenerUsuarios');
-        return result;
+        return result[0][0];
     }
 
     async actualizarUsuario(userID: number, username: string, passwrd: string, email: string, rol: string): Promise<Usuario> {

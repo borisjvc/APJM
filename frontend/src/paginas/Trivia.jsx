@@ -22,7 +22,21 @@ export default function Trivia() {
     const [respuestasUsuario, setRespuestasUsuario] = useState({});
     const [resultado, setResultado] = useState({});
     const [preguntaActual, setPreguntaActual] = useState(0);
+    const [tiempoRestante, setTiempoRestante] = useState(10);
 
+    useEffect(() => {
+      // Reiniciar el temporizador cuando cambia la pregunta actual
+      setTiempoRestante(10);
+  
+      // Iniciar el temporizador
+      const temporizador = setInterval(() => {
+        setTiempoRestante((prevTiempo) => prevTiempo - 1);
+      }, 1000);
+  
+      // Limpiar el temporizador cuando el componente se desmonta o cambia la pregunta
+      return () => clearInterval(temporizador);
+    }, [preguntaActual]);
+    
     const obtenerPreguntas = async () => {
         try {
             const response = await axios.get("http://localhost:3001/trivia/list");
