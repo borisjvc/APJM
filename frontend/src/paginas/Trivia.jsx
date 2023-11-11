@@ -11,32 +11,51 @@ const decodeHTML = (html) => {
 
 const cardStyle = {
     maxHeight: "600px",
-    maxWidth: "800px", 
+    maxWidth: "800px",
     margin: "0 auto",
     textAlign: "left",
 };
 
-//agregar tiempo para responder a la pregunta
 export default function Trivia() {
     const [preguntas, setPreguntas] = useState([]);
     const [respuestasUsuario, setRespuestasUsuario] = useState({});
     const [resultado, setResultado] = useState({});
     const [preguntaActual, setPreguntaActual] = useState(0);
     const [tiempoRestante, setTiempoRestante] = useState(10);
+    const [preguntaAutomatica, setPreguntaAutomatica] = useState(false);
 
     useEffect(() => {
-      // Reiniciar el temporizador cuando cambia la pregunta actual
-      setTiempoRestante(10);
-  
-      // Iniciar el temporizador
-      const temporizador = setInterval(() => {
-        setTiempoRestante((prevTiempo) => prevTiempo - 1);
-      }, 1000);
-  
-      // Limpiar el temporizador cuando el componente se desmonta o cambia la pregunta
-      return () => clearInterval(temporizador);
-    }, [preguntaActual]);
-    
+        setTiempoRestante(10);
+
+        // Iniciar el temporizador de respuesta
+        const temporizadorRespuesta = setInterval(() => {
+            setTiempoRestante((prevTiempo) => prevTiempo - 1);
+        }, 1000);
+
+        // Iniciar el temporizador de cambio de pregunta automático
+        const temporizadorCambioPregunta = setTimeout(() => {
+            if (preguntaActual < preguntas.length - 1) {
+                // Avanzar a la siguiente pregunta de forma automática
+                setPreguntaActual(preguntaActual + 1);
+            } else {
+                // Llegamos a la última pregunta, mostrar resultado final
+                setPreguntaActual(preguntas.length);
+            }
+            setPreguntaAutomatica(true);
+        }, 10000);
+
+        // Limpieza del temporizador de cambio de pregunta automático
+        return () => {
+            clearInterval(temporizadorRespuesta);
+            clearTimeout(temporizadorCambioPregunta);
+
+            // Desactivar el temporizador de cambio automático si estaba activo
+            if (preguntaAutomatica) {
+                setPreguntaAutomatica(false);
+            }
+        };
+    }, [preguntaActual, preguntas, preguntaAutomatica]);
+
     const obtenerPreguntas = async () => {
         try {
             const response = await axios.get("http://localhost:3001/trivia/list");
@@ -79,57 +98,57 @@ export default function Trivia() {
     };
 
     return (
-        <>
-            <div>
-                <h1>Trivia</h1>
-                {preguntas.length > 0 && preguntaActual < preguntas.length && (
-                    <Card style={cardStyle}>
-                        <Card.Content>
-                            <Card.Header>
-                                {decodeHTML(preguntas[preguntaActual].question)}
-                            </Card.Header>
-                        </Card.Content>
-                        <Card.Content>
-                            <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
-                                {[...preguntas[preguntaActual].incorrect_answers, preguntas[preguntaActual].correct_answer].map(
-                                    (respuesta, respuestaIndex) => (
-                                        <li key={respuestaIndex}>
-                                            <Radio
-                                                label={decodeHTML(respuesta)}
-                                                name={`pregunta${preguntaActual}`}
-                                                value={respuesta}
-                                                checked={respuestasUsuario[preguntaActual] === respuesta}
-                                                onChange={() => handleRespuestaChange(respuesta)}
-                                            />
-                                        </li>
-                                    )
-                                )}
-                            </ul>
-                        </Card.Content>
-                        {resultado[preguntaActual] !== undefined ? (
-                            <div style={{ textAlign: "center" }}>
-                                <p>Respuesta: {resultado[preguntaActual] ? "Correcta" : "Incorrecta"}</p>
-                                <Button color="yellow" onClick={siguientePregunta}>Siguiente Pregunta</Button>
-                            </div>
-                        ) : (
-                            <Button color="green" onClick={verificarRespuesta}>Verificar Respuesta</Button>
-                        )}
-                    </Card>
-                )}
-                {preguntaActual === preguntas.length && (
-                    <div>
-                        <h2>Resultado Final:</h2>
-                        <ul>
-                            {preguntas.map((pregunta, index) => (
-                                <li key={index}>
-                                    Pregunta {index + 1}: {resultado[index] ? "Correcta" : "Incorrecta"}
-                                </li>
-                            ))}
+        <div>
+            <h1>Trivia</h1>
+            {preguntas.length > 0 && preguntaActual < preguntas.length && (
+                <Card style={cardStyle}>
+                    <Card.Content>
+                        <Card.Header>{decodeHTML(preguntas[preguntaActual].question)}</Card.Header>
+                        <p>Tiempo restante: {tiempoRestante} segundos</p>
+                    </Card.Content>
+                    <Card.Content>
+                        <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
+                            {[...preguntas[preguntaActual].incorrect_answers, preguntas[preguntaActual].correct_answer].map(
+                                (respuesta, respuestaIndex) => (
+                                    <li key={respuestaIndex}>
+                                        <Radio
+                                            label={decodeHTML(respuesta)}
+                                            name={`pregunta${preguntaActual}`}
+                                            value={respuesta}
+                                            checked={respuestasUsuario[preguntaActual] === respuesta}
+                                            onChange={() => handleRespuestaChange(respuesta)}
+                                        />
+                                    </li>
+                                )
+                            )}
                         </ul>
-                    </div>
-                )}
-            </div>
-
-        </>
+                    </Card.Content>
+                    {resultado[preguntaActual] !== undefined ? (
+                        <div style={{ textAlign: "center" }}>
+                            <p>Respuesta: {resultado[preguntaActual] ? "Correcta" : "Incorrecta"}</p>
+                            <Button color="yellow" onClick={siguientePregunta}>
+                                Siguiente Pregunta
+                            </Button>
+                        </div>
+                    ) : (
+                        <Button color="green" onClick={verificarRespuesta}>
+                            Verificar Respuesta 
+                        </Button>
+                    )}
+                </Card>
+            )}
+            {preguntaActual === preguntas.length && (
+                <div>
+                    <h2>Resultado Final:</h2>
+                    <ul>
+                        {preguntas.map((pregunta, index) => (
+                            <li key={index}>
+                                Pregunta {index + 1}: {resultado[index] ? "Correcta" : "Incorrecta"}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </div>
     );
 }
