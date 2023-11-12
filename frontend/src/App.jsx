@@ -12,21 +12,18 @@ import Descripcion from './paginas/Descripcion';
 import Registro from './paginas/Registro';
 import Trivia from './paginas/Trivia';
 import Usuarios from './paginas/Dashboard/Dashboard_Usuarios';
-import DashPeliculas from './paginas/Dashboard/Dashboard_Peliculas';
-import DashJuegos from './paginas/Dashboard/Dashboard_Juegos';
-import DashAnime from './paginas/Dashboard/Dashboard_Anime';
-import DashManga from './paginas/Dashboard/Dashboard_Manga';
+import Perfil from './paginas/Perfil';
 
 function App() {
   const router = createBrowserRouter([
-    
+
     {
       path: "/",
       element: <Inicio />
     },
     {
       path: "/descripcion/:Categoria/:Id",
-      element: <Descripcion/>
+      element: <Descripcion />
     },
     {
       path: "/peliculas",
@@ -50,41 +47,33 @@ function App() {
     },
     {
       path: "/registro",
-      element: <Registro/>
+      element: <Registro />
     },
     {
       path: "/trivia",
-      element: <Trivia/>
+      element: <Trivia />
     },
     {
-      path: "/inicio-admin",
-      element: <Usuarios/>
+      path: "/dashboard/usuarios",
+      element: <Usuarios />
+    }, 
+    {
+      path: "/dashboard/listas",
+      element: <Usuarios />
     },
     {
-      path: "/Dashboard_Peliculas",
-      element: <DashPeliculas/>
+      path: "/perfil",
+      element: <Perfil />
     },
-    {
-      path: "/Dashboard_Anime",
-      element: <DashAnime/>
-    },
-    {
-      path: "/Dashboard_Juegos",
-      element: <DashJuegos/>
-    },
-    {
-      path: "/Dashboard_Manga",
-      element: <DashManga/>
-    },
-    
+
   ])
   return (
 
     <div>
-        <Navbar />
-        <RouterProvider router={router} />
+      <Navbar />
+      <RouterProvider router={router} />
     </div>
-    
+
   );
 }
 
