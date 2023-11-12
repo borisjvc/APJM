@@ -11,11 +11,12 @@ const LoginForm = () => {
 
     const [user, setUser] = useState([]);
     const [profile, setProfile] = useState(null);
-    const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         correo: '',
         contraseña: '',
     });
+    const navigate = useNavigate();
+
     const [notificationVisible, setNotificationVisible] = useState(false);
 
     useEffect(() => {
@@ -97,7 +98,7 @@ const LoginForm = () => {
                             icon="user"
                             iconPosition="left"
                             placeholder="Nombre de usuario"
-                            vslue={formValues.correo}
+                            value={formValues.correo}
                             onChange={handleInputChange}
                         />
                         <Form.Input
