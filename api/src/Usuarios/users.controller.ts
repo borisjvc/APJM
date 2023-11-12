@@ -10,16 +10,26 @@ export class UsuariosController {
         @Body('Username') username: string,
         @Body('Passwrd') passwrd: string,
         @Body('Email') email: string,
-        @Body('Rol') rol: string,
+        @Body('Rol') rol?: string,
     ) {
-        const newUser = await this.usuariosService.crearUsuario(username, passwrd, email, rol);
-        return newUser;
+        try {
+            const newUser = await this.usuariosService.crearUsuario(username, passwrd, email, rol);
+            return newUser;
+        } catch (error) {
+            return { message: error };
+        }
+
     }
 
     @Get(':id')
     async obtenerUsuarioPorID(@Param('id') userID: number) {
-        const user = await this.usuariosService.obtenerUsuarioPorID(userID);
-        return user;
+        try {
+            const user = await this.usuariosService.obtenerUsuarioPorID(userID);
+            return user;
+        } catch (error) {
+            return { message: error };
+        }
+
     }
 
     @Get()

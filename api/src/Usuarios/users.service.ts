@@ -12,13 +12,20 @@ export class UsuariosService {
         private readonly connection: Connection, // conexión a la base de datos
     ) { }
 
-    async crearUsuario(username: string, passwrd: string, email: string, rol: string): Promise<Usuario> {
+    async crearUsuario(username: string, passwrd: string, email: string, rol?: string): Promise<Usuario> {
         const queryRunner = this.connection.createQueryRunner();
         await queryRunner.connect();
         await queryRunner.startTransaction();
 
         try {
-            // Llamar al procedimiento almacenado para crear un usuario
+            // Verificar si ya existe un usuario con el mismo correo electrónico
+            const existingUser = await queryRunner.query('SELECT * FROM Usuarios WHERE Email = ?', [email]);
+
+            if (existingUser.length > 0) {
+                throw new Error('Ya existe un usuario con este correo electrónico.');
+            }
+
+            // Si no existe, proceder con la creación del usuario
             await queryRunner.query('CALL CrearUsuario(?, ?, ?, ?)', [username, passwrd, email, rol]);
             await queryRunner.commitTransaction();
         } catch (error) {
@@ -28,7 +35,7 @@ export class UsuariosService {
             await queryRunner.release();
         }
 
-        // Devolver el usuario creado 
+        // Devolver el usuario creado
         const newUser = new Usuario();
         newUser.Username = username;
         newUser.Passwrd = passwrd;
@@ -38,44 +45,40 @@ export class UsuariosService {
     }
 
     async obtenerUsuarioPorID(userID: number): Promise<Usuario> {
-        // Llamar al procedimiento almacenado para obtener un usuario por su ID
-        const result = await this.usuarioRepository.query('CALL ObtenerUsuarioPorID(?)', [userID]);
-        return result[0]; // Asumiendo que el procedimiento devuelve un solo usuario
+        const result = await this.usuarioRepository.query('CALL LeerUsuario(?)', [userID]);
+        return result[0];
     }
 
     async obtenerUsuarios(): Promise<Usuario[]> {
-        // Llamar al procedimiento almacenado para obtener todos los usuarios
         const result = await this.usuarioRepository.query('CALL ObtenerUsuarios');
-        return result[0][0];
+        return result[0];
     }
 
-    async actualizarUsuario(userID: number, username: string, passwrd: string, email: string, rol: string): Promise<Usuario> {
+    async actualizarUsuario(userID: number, username: string, passwrd: string, email: string, rol: string): Promise<{ success: boolean, message?: string }> {
         const queryRunner = this.connection.createQueryRunner();
         await queryRunner.connect();
         await queryRunner.startTransaction();
-
         try {
-            // Llamar al procedimiento almacenado para actualizar un usuario
-            await queryRunner.query('CALL ActualizarUsuario(?, ?, ?, ?, ?)', [userID, username, passwrd, email, rol]);
-            await queryRunner.commitTransaction();
+            const result = await queryRunner.query('CALL ActualizarUsuario(?, ?, ?, ?, ?)', [userID, username, passwrd, email, rol]);
+
+            // Verificar el resultado de la actualización
+            if (result && result.affectedRows > 0) {
+                await queryRunner.commitTransaction();
+                return { success: true, message: 'Actualización exitosa' };
+            } else {
+                throw new Error('No se pudo actualizar el usuario.');
+            }
         } catch (error) {
             await queryRunner.rollbackTransaction();
-            throw error;
+            return { success: false, message: error.message || 'Error al actualizar el usuario.' };
         } finally {
             await queryRunner.release();
         }
-
-        // Devolver el usuario actualizado (puedes ajustar esto según tu necesidad)
-        const updatedUser = new Usuario();
-        updatedUser.Username = username;
-        updatedUser.Passwrd = passwrd;
-        updatedUser.Email = email;
-        updatedUser.Rol = rol;
-        return updatedUser;
     }
+
 
     async eliminarUsuario(userID: number): Promise<void> {
-        // Llamar al procedimiento almacenado para eliminar un usuario
         await this.usuarioRepository.query('CALL EliminarUsuario(?)', [userID]);
     }
+
 }
