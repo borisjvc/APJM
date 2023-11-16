@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Container, Segment, Header, Grid, Button, Icon } from "semantic-ui-react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Container, Grid, Image, Tab, Form, Button, Card, Icon } from 'semantic-ui-react';
 
-
-export default function Perfil() {
+const Perfil = () => {
     const userId = 1;
     const [userData, setUserData] = useState([]);
     const [Listas, setListas] = useState([]);
@@ -35,36 +34,72 @@ export default function Perfil() {
         // Puedes hacer una solicitud PUT a la API para actualizar los datos del usuario
         setIsEditMode(false);
     };
+    const userLists = {
+        animes: ['Attack on Titan', 'My Hero Academia', 'Death Note'],
+        mangas: ['One Piece', 'Naruto', 'Demon Slayer'],
+        movies: ['Inception', 'The Shawshank Redemption', 'The Dark Knight'],
+        videoGames: ['The Legend of Zelda', 'Super Mario Odyssey', 'Final Fantasy VII'],
+    };
+
+    const panes = [
+        { menuItem: 'Animes', render: () => <Tab.Pane>{renderList(userLists.animes)}</Tab.Pane> },
+        { menuItem: 'Mangas', render: () => <Tab.Pane>{renderList(userLists.mangas)}</Tab.Pane> },
+        { menuItem: 'Movies', render: () => <Tab.Pane>{renderList(userLists.movies)}</Tab.Pane> },
+        { menuItem: 'Video Games', render: () => <Tab.Pane>{renderList(userLists.videoGames)}</Tab.Pane> },
+    ];
+
+    const renderList = (list) => (
+        <Card.Group>
+            {list.map((item, index) => (
+                <Card key={index}>
+                    <Card.Content>
+                        <Card.Header>{item}</Card.Header>
+                    </Card.Content>
+                </Card>
+            ))}
+        </Card.Group>
+    );
 
     return (
-        <Container>
-            <Segment raised>
-                <Grid columns={2} stackable>
-                    <Grid.Column width={4}>
-                        <Header as="h2">
-                            {userData.Username}
-                        </Header>
-                        <p>Correo Electrónico: {userData.Email}</p>
-                        <Button primary icon labelPosition="left" onClick={handleEdit}>
-                            <Icon name="edit outline" />
-                            Editar Datos
-                        </Button>
-                        {isEditMode && (
-                            <Button color="green" icon labelPosition="left" onClick={handleSaveChanges}>
-                                <Icon name="save outline" />
-                                Guardar Cambios
+        <Container className="emp-profile">
+            <Form>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={4}>
+                            <div className="profile-img">
+                                <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                            </div>
+                        </Grid.Column>
+                        <Grid.Column width={8}>
+                            <div className="profile-head">
+                                <h2>{userData.Username} </h2>
+                                <h4>Email: {userData.Email}</h4>
+                            </div>
+                            <Button primary icon labelPosition="left" onClick={handleEdit}>
+                                <Icon name="edit outline" />
+                                Editar Datos
                             </Button>
-                        )}
-                    </Grid.Column>
-                    <Grid.Column width={12}>
-                        <Header as="h2">Listas creadas</Header>
-                        {/* Aquí puedes mostrar las listas del usuario */}
-                        <p>Lista de Anime: [Lista de Anime del Usuario]</p>
-                        <p>Lista de Manga: [Lista de Manga del Usuario]</p>
-                        {/* Puedes personalizar esta sección según tus necesidades */}
-                    </Grid.Column>
+                            {isEditMode && (
+                                <>
+                                    <Button color="green" icon labelPosition="left" onClick={handleSaveChanges}>
+                                        <Icon name="save outline" />
+                                        Guardar Cambios
+                                    </Button>
+                                    <Button color="red" icon labelPosition="left" onClick={handleEdit}> <Icon name="window close" />Cancelar</Button>
+                                </>
+                            )}                        
+                            </Grid.Column>
+                    </Grid.Row>
+
+                    <Grid.Row>
+                        <Grid.Column width={16}>
+                            <Tab panes={panes} />
+                        </Grid.Column>
+                    </Grid.Row>
                 </Grid>
-            </Segment>
+            </Form>
         </Container>
     );
-}
+};
+
+export default Perfil;
