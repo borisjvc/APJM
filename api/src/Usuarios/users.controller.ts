@@ -55,4 +55,15 @@ export class UsuariosController {
         await this.usuariosService.eliminarUsuario(userID);
         return { message: 'Usuario eliminado exitosamente' };
     }
+
+    @Post('login')
+    async login(@Body('Email') Email: string, @Body('Passwrd') Passwrd: string) {
+        const user = await this.usuariosService.validateUser(Email, Passwrd);
+
+        if (!user) {
+            return { message: 'Credenciales invalidas' };
+        }
+
+        return { message: 'Login exitoso', user: user[0] };
+    }
 }

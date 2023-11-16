@@ -81,4 +81,15 @@ export class UsuariosService {
         await this.usuarioRepository.query('CALL EliminarUsuario(?)', [userID]);
     }
 
+    async validateUser(username: string, password: string): Promise<Usuario | null> {
+        const result = await this.usuarioRepository.query('CALL usp_ValidateUser(?, ?)', [username, password]);
+        const user = result[0];
+        
+        if (user.length === 0) {
+            return null;
+        }
+
+        return user;
+    }
+
 }

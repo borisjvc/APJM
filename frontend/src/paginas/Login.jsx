@@ -13,26 +13,14 @@ const LoginForm = () => {
     const [profile, setProfile] = useState(null);
     const [formValues, setFormValues] = useState({
         correo: '',
-        contraseña: '',
+        password: '',
     });
     const navigate = useNavigate();
 
     const [notificationVisible, setNotificationVisible] = useState(false);
 
     useEffect(() => {
-        if (user) {
-            axios
-                .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-                    headers: {
-                        Authorization: `Bearer ${user.access_token}`,
-                        Accept: 'application/json'
-                    }
-                })
-                .then((res) => {
-                    setProfile(res.data);
-                })
-                .catch((err) => console.log(err));
-        }
+
     }, [user]);
 
     // log out function to log the user out of google and set the profile array to null
@@ -44,9 +32,7 @@ const LoginForm = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormValues({
-            ...formValues,
-            [name]: value,
+        setFormValues({...formValues, [name]: value,
         });
     };
 
@@ -54,12 +40,12 @@ const LoginForm = () => {
 
         // Datos del formulario a enviar a la API
         const userData = {
-            correo: formValues.correo,
-            password: formValues.contraseña
+            Email: formValues.correo,
+            Passwrd: formValues.password
         };
 
         // Realizar la solicitud POST a la API para iniciar sesión
-        axios.post("http://localhost:3001/users/login", userData)
+        axios.post("http://localhost:3001/usuarios/login", userData)
             .then(response => {
                 if (response.data.success) {
                     login(response.data.usuario);
@@ -88,7 +74,6 @@ const LoginForm = () => {
         <Grid textAlign="center" verticalAlign="middle" style={{ height: '100vh' }}>
             <Grid.Column style={{ maxWidth: 450 }}>
                 <Form error size="large">
-
                     <Segment stacked>
                         <Header as="h2" color="grey" textAlign="center">
                             Iniciar sesión
@@ -97,7 +82,8 @@ const LoginForm = () => {
                             fluid
                             icon="user"
                             iconPosition="left"
-                            placeholder="Nombre de usuario"
+                            name="correo"
+                            placeholder="Correo electrónico"
                             value={formValues.correo}
                             onChange={handleInputChange}
                         />
@@ -107,7 +93,8 @@ const LoginForm = () => {
                             iconPosition="left"
                             placeholder="Contraseña"
                             type="password"
-                            value={formValues.contraseña}
+                            name="password"
+                            value={formValues.password}
                             onChange={handleInputChange}
                         />
                         {notificationVisible && (
