@@ -17,8 +17,7 @@ export default function MangaDescripcion({ manga }) {
             navigate("/login");
         else {
             const decodedToken = jwtDecode(token);
-            console.log(decodedToken.sub)
-            const user = decodedToken.sub;
+            const user = decodedToken.id;
             const datos = { user: user, elemento: id, status: "Ver más tarde" }
             axios.post(`http://localhost:3001/listas/agregar`, datos)
                 .then(response => {

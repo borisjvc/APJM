@@ -10,7 +10,8 @@ export class UsuariosListasService {
     ) { }
 
     async leerListaDeUsuario(usuarioID: number) {
-        return this.entityManager.query('CALL LeerListaDeUsuario(?)', [usuarioID]);
+        const lista = await this.entityManager.query('CALL LeerListaDeUsuario(?)', [usuarioID]);
+        return lista[0];
     }
 
     async eliminarDeLista(usuarioID: number, elementoID: number) {

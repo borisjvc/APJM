@@ -91,7 +91,7 @@ export class UsuariosService {
             return null;
         }
         
-        const payload = { sub: user[0].ID, username: user[0].Username, email: user[0].Email, rol: user[0].Rol };
+        const payload = { id: user[0].ID, username: user[0].Username, email: user[0].Email, rol: user[0].Rol };
 
         const token = this.jwtService.sign(payload);
 

@@ -7,9 +7,13 @@ import axios from 'axios';
 export default function Perfil() {
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
-    const [Listas, setListas] = useState([]);
     const [isEditMode, setIsEditMode] = useState(false);
     const [User, setUser] = useState('');
+    const [Listas, setListas] = useState([]);
+    const [Anime, setAnime] = useState([]);
+    const [Peliculas, setPeliculas] = useState([]);
+    const [Juegos, setJuegos] = useState([]);
+    const [Manga, setManga] = useState([]);
 
     const fetchData = async () => {
         if (!token) {
@@ -17,20 +21,29 @@ export default function Perfil() {
         } else {
             try {
                 const decodedToken = jwtDecode(token);
-
-                // Extract user information from the decoded token
                 setUser(decodedToken);
 
-                const response = await axios.get(`http://localhost:3001/usuarios/listas/${User.sub}`);
-                setListas(response.data[0]);
+                const response = await axios.get(`http://localhost:3001/listas/${decodedToken.id}`);
+                setListas(response.data);
             } catch (error) {
                 console.error("Error al obtener listas: ", error);
-            } 
+            }
+        }
+    };
+
+    const fetchImg = async () => {
+        try {
+            //TODO: Conseguir la informacion de cada anime,pelicula, etc para mostrar una card que tenga su imagen y nombre
+            const response = await axios.get(`http://localhost:3001/anime/`);
+            setAnime(response)
+        } catch (error) {
+            console.error("Error al obtener imagenes: ", error);
         }
     };
 
     useEffect(() => {
         fetchData();
+        fetchImg();
     }, []);
 
     const handleEdit = () => {
@@ -53,16 +66,16 @@ export default function Perfil() {
     const panes = [
         { menuItem: 'Animes', render: () => <Tab.Pane>{renderList(userLists.animes)}</Tab.Pane> },
         { menuItem: 'Mangas', render: () => <Tab.Pane>{renderList(userLists.mangas)}</Tab.Pane> },
-        { menuItem: 'Movies', render: () => <Tab.Pane>{renderList(userLists.movies)}</Tab.Pane> },
-        { menuItem: 'Video Games', render: () => <Tab.Pane>{renderList(userLists.videoGames)}</Tab.Pane> },
+        { menuItem: 'Peliculas', render: () => <Tab.Pane>{renderList(userLists.movies)}</Tab.Pane> },
+        { menuItem: 'Videojuegos', render: () => <Tab.Pane>{renderList(userLists.videoGames)}</Tab.Pane> },
     ];
 
     const renderList = (list) => (
         <Card.Group>
-            {list.map((item, index) => (
-                <Card key={index}>
+            {Listas.map((item) => (
+                <Card key={item.ElementoID}>
                     <Card.Content>
-                        <Card.Header>{item}</Card.Header>
+                        <Card.Header>{item.Estatus}: {item.ElementoID}</Card.Header>
                     </Card.Content>
                 </Card>
             ))}
@@ -102,6 +115,7 @@ export default function Perfil() {
 
                     <Grid.Row>
                         <Grid.Column width={16}>
+                            <h2>Ver más tarde</h2>
                             <Tab panes={panes} />
                         </Grid.Column>
                     </Grid.Row>
