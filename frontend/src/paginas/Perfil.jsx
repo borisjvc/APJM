@@ -6,31 +6,32 @@ import axios from 'axios';
 
 export default function Perfil() {
     const token = localStorage.getItem('token');
-    const decodedToken = jwtDecode(token);
-    const userId = decodedToken.sub;
-    const Username = decodedToken.username;
-    const Email = decodedToken.email;
-    console.log(userId, Username, Email)
-
     const navigate = useNavigate();
     const [Listas, setListas] = useState([]);
     const [isEditMode, setIsEditMode] = useState(false);
+    const [User, setUser] = useState('');
+
+    const fetchData = async () => {
+        if (!token) {
+            navigate("/login");
+        } else {
+            try {
+                const decodedToken = jwtDecode(token);
+
+                // Extract user information from the decoded token
+                setUser(decodedToken);
+
+                const response = await axios.get(`http://localhost:3001/usuarios/listas/${User.sub}`);
+                setListas(response.data[0]);
+            } catch (error) {
+                console.error("Error al obtener listas: ", error);
+            } 
+        }
+    };
 
     useEffect(() => {
-        if (!token) {
-            navigate("/login")
-        } else {
-
-            axios.get(`http://localhost:3001/usuarios/listas/${userId}`)
-                .then((response) => {
-                    setListas(response.data[0]);
-                })
-                .catch((error) => {
-                    console.error("Error al obtener listas del usuario: ", error);
-                });
-        }
-
-    }, [token]);
+        fetchData();
+    }, []);
 
     const handleEdit = () => {
         setIsEditMode(!isEditMode);
@@ -41,6 +42,7 @@ export default function Perfil() {
         // Puedes hacer una solicitud PUT a la API para actualizar los datos del usuario
         setIsEditMode(false);
     };
+
     const userLists = {
         animes: ['Attack on Titan', 'My Hero Academia', 'Death Note'],
         mangas: ['One Piece', 'Naruto', 'Demon Slayer'],
@@ -79,8 +81,8 @@ export default function Perfil() {
                         </Grid.Column>
                         <Grid.Column width={8}>
                             <div className="profile-head">
-                                <h2>{Username} </h2>
-                                <h4>Email: {Email}</h4>
+                                <h2>{User.username} </h2>
+                                <h4>Email: {User.email}</h4>
                             </div>
                             <Button primary icon labelPosition="left" onClick={handleEdit}>
                                 <Icon name="edit outline" />
@@ -108,4 +110,3 @@ export default function Perfil() {
         </Container>
     );
 };
-

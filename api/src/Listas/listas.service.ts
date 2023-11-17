@@ -17,7 +17,7 @@ export class UsuariosListasService {
         return this.entityManager.query('CALL EliminarDeLista(?, ?)', [usuarioID, elementoID]);
     }
 
-    async agregarALista(usuarioID: number, elementoID: number, estatus: string) {
+    async agregarALista(usuarioID: number, elementoID: string, estatus: string) {
         return this.entityManager.query('CALL AgregarALista(?, ?, ?)', [usuarioID, elementoID, estatus]);
     }
 

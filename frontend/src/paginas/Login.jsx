@@ -5,9 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-
 const LoginForm = () => {
-    const decodedToken = jwtDecode(localStorage.getItem('token'));
     const [user, setUser] = useState(null);
     const [profile, setProfile] = useState(null);
     const [formValues, setFormValues] = useState({
@@ -20,8 +18,10 @@ const LoginForm = () => {
     const [notificationVisible, setNotificationVisible] = useState(false);
 
     useEffect(() => {
-
-    }, [user]);
+        const token = localStorage.getItem('token');
+        if(token)
+            navigate("/perfil")
+    }, []);
 
     // log out function to log the user out of google and set the profile array to null
     const logOut = () => {
@@ -49,18 +49,20 @@ const LoginForm = () => {
                 if (response.data.message == 'Login exitoso') {
                     const token = response.data.token;
                     localStorage.setItem('token', token);
+                    const decodedToken = jwtDecode(token);
 
                     if(decodedToken.rol == "Administrador")
                         navigate("/dashboard/usuarios");
                     else
                         navigate("/");
                 } else {
+                    setNotificationVisible(true);
                     console.log(response.data.message);
                 }
             })
             .catch(error => {
                 console.error("Error al iniciar sesión: ");
-                setNotificationVisible(true);
+                
             });
     };
 

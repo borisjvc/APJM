@@ -4,6 +4,7 @@ import { Icon, Input } from 'semantic-ui-react';
 export default function Navbar() {
     const [searchVisible, setSearchVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const token = localStorage.getItem('token');
 
     const toggleSearchBar = () => {
         setSearchVisible(!searchVisible);
@@ -28,9 +29,16 @@ export default function Navbar() {
                 <a href="/manga">Manga</a>
                 <a href='/trivia'>Trivia</a>
                 <div style={{ float: 'right' }}>
-                    <a href="/login">
-                        <Icon link size='large' name='user outline' />
-                    </a>
+                    {!token ? (
+                        <a href="/login">
+                            <Icon link size='large' name='user outline' />
+                        </a>
+                    ) : (
+                        <a href="/perfil">
+                            <Icon link size='large' name='user outline' />
+                        </a>)
+                    }
+
                     {searchVisible ? (
                         <Input
                             icon="search"

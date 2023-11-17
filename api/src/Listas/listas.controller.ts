@@ -16,9 +16,11 @@ export class UsuariosListasController {
     }
 
     @Post('agregar')
-    async agregarALista(@Body() body: { usuarioID: number; elementoID: number; estatus: string }) {
-        const { usuarioID, elementoID, estatus } = body;
-        return this.usuariosListasService.agregarALista(usuarioID, elementoID, estatus);
+    async agregarALista(
+        @Body('user') user: number,
+        @Body('elemento') elemento: string,
+        @Body('status') status: string) {
+        return this.usuariosListasService.agregarALista(user, elemento, status);
     }
 
     @Put('status')

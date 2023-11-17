@@ -11,8 +11,9 @@ import { PeliculasService } from './peliculas/peliculas.service';
 import { JuegosService } from './juegos/juegos.service';
 import { TriviaController } from './trivia/trivia.controller';
 import { TriviaService } from './trivia/trivia.service';
-import { ListasModule } from './Listas/listas.module';
 import { UsuariosModule } from './Usuarios/users.module';
+import { UsuariosListasController } from './Listas/listas.controller';
+import { UsuariosListasService } from './Listas/listas.service';
 
 @Module({
   imports: [
@@ -25,8 +26,8 @@ import { UsuariosModule } from './Usuarios/users.module';
     database: 'kurosagi',
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true
-    }), UsuariosModule, ListasModule, HttpModule],
-  controllers: [JuegosController, AnimeController, MangaController, PeliculasController, TriviaController],
-  providers: [AnimeService, MangaService, PeliculasService, JuegosService, TriviaService],
+    }), UsuariosModule, HttpModule],
+  controllers: [JuegosController, AnimeController, MangaController, PeliculasController, TriviaController, UsuariosListasController],
+  providers: [AnimeService, MangaService, PeliculasService, JuegosService, TriviaService, UsuariosListasService],
 }) //convertir en modulos
 export class AppModule {}

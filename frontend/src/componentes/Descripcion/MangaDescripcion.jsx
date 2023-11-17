@@ -1,21 +1,43 @@
 import React from "react";
+import axios from "axios";
 import { Button, Card, Image } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 export default function MangaDescripcion({ manga }) {
     const navigate = useNavigate();
 
-    const handleCardClick = (Id) => {
-        navigate(`/descripcion/manga/${Id}`);
+    const handleCardClick = (id) => {
+        navigate(`/descripcion/manga/${id}`);
+    };
+
+    const addLater = (id) => {
+        const token = localStorage.getItem('token');
+        if (!token)
+            navigate("/login");
+        else {
+            const decodedToken = jwtDecode(token);
+            console.log(decodedToken.sub)
+            const user = decodedToken.sub;
+            const datos = { user: user, elemento: id, status: "Ver más tarde" }
+            axios.post(`http://localhost:3001/listas/agregar`, datos)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.error("Error al agregar a la lista: ", error);
+                });
+        }
+
     };
 
     return (
         <>
             <aside className="left-aside">
-                <img src={manga.main_picture.large} alt={manga.title} className="manga-image"/>
+                <img src={manga.main_picture.large} alt={manga.title} className="manga-image" />
                 <br></br>
                 <br></br>
-                <Button content="Ver más tarde" icon='bookmark' labelPosition='left' compact color="blue" />
+                <Button content="Ver más tarde" icon='bookmark' labelPosition='left' compact color="blue" onClick={() => addLater(manga.id)} />
 
                 <br></br>
                 <br></br>

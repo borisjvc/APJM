@@ -63,10 +63,11 @@ function App() {
     },
     {
       path: "/perfil",
-      element: <Perfil />
+      element: <Perfil/> 
     },
 
   ])
+
   return (
 
     <div>
