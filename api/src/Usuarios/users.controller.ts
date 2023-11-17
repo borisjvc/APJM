@@ -64,6 +64,6 @@ export class UsuariosController {
             return { message: 'Credenciales invalidas' };
         }
 
-        return { message: 'Login exitoso', user: user[0] };
+        return { token: user.token, message: 'Login exitoso' };
     }
 }

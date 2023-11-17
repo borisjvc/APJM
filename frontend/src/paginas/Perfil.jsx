@@ -1,29 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Container, Grid, Image, Tab, Form, Button, Card, Icon } from 'semantic-ui-react';
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
-const Perfil = () => {
-    const userId = 1;
-    const [userData, setUserData] = useState([]);
+export default function Perfil() {
+    const token = localStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.sub;
+    const Username = decodedToken.username;
+    const Email = decodedToken.email;
+    console.log(userId, Username, Email)
+
+    const navigate = useNavigate();
     const [Listas, setListas] = useState([]);
     const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/usuarios/${userId}`)
-            .then((response) => {
-                setUserData(response.data[0]);
-            })
-            .catch((error) => {
-                console.error("Error al obtener el perfil del usuario: ", error);
-            });
-        axios.get(`http://localhost:3001/usuarios/listas/${userId}`)
-            .then((response) => {
-                setListas(response.data[0]);
-            })
-            .catch((error) => {
-                console.error("Error al obtener listas del usuario: ", error);
-            });
-    }, [userId]);
+        if (!token) {
+            navigate("/login")
+        } else {
+
+            axios.get(`http://localhost:3001/usuarios/listas/${userId}`)
+                .then((response) => {
+                    setListas(response.data[0]);
+                })
+                .catch((error) => {
+                    console.error("Error al obtener listas del usuario: ", error);
+                });
+        }
+
+    }, [token]);
 
     const handleEdit = () => {
         setIsEditMode(!isEditMode);
@@ -72,8 +79,8 @@ const Perfil = () => {
                         </Grid.Column>
                         <Grid.Column width={8}>
                             <div className="profile-head">
-                                <h2>{userData.Username} </h2>
-                                <h4>Email: {userData.Email}</h4>
+                                <h2>{Username} </h2>
+                                <h4>Email: {Email}</h4>
                             </div>
                             <Button primary icon labelPosition="left" onClick={handleEdit}>
                                 <Icon name="edit outline" />
@@ -87,8 +94,8 @@ const Perfil = () => {
                                     </Button>
                                     <Button color="red" icon labelPosition="left" onClick={handleEdit}> <Icon name="window close" />Cancelar</Button>
                                 </>
-                            )}                        
-                            </Grid.Column>
+                            )}
+                        </Grid.Column>
                     </Grid.Row>
 
                     <Grid.Row>
@@ -102,4 +109,3 @@ const Perfil = () => {
     );
 };
 
-export default Perfil;

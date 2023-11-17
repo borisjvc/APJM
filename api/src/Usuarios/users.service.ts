@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Usuario } from './dto/user.entity';
 import { Connection } from 'typeorm';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsuariosService {
@@ -10,6 +11,7 @@ export class UsuariosService {
         @InjectRepository(Usuario)
         private readonly usuarioRepository: Repository<Usuario>,
         private readonly connection: Connection, // conexión a la base de datos
+        private readonly jwtService: JwtService,
     ) { }
 
     async crearUsuario(username: string, passwrd: string, email: string, rol?: string): Promise<Usuario> {
@@ -81,15 +83,19 @@ export class UsuariosService {
         await this.usuarioRepository.query('CALL EliminarUsuario(?)', [userID]);
     }
 
-    async validateUser(username: string, password: string): Promise<Usuario | null> {
-        const result = await this.usuarioRepository.query('CALL usp_ValidateUser(?, ?)', [username, password]);
+    async validateUser(Email: string, password: string): Promise<{ user: Usuario, token: string } | null> {
+        const result = await this.usuarioRepository.query('CALL usp_ValidateUser(?, ?)', [Email, password]);
         const user = result[0];
-        
+
         if (user.length === 0) {
             return null;
         }
+        
+        const payload = { sub: user[0].ID, username: user[0].Username, email: user[0].Email, rol: user[0].Rol };
 
-        return user;
+        const token = this.jwtService.sign(payload);
+
+        return { user, token };
     }
 
 }

@@ -1,20 +1,20 @@
 import { Button, Form, Grid, Header, Segment, Message } from 'semantic-ui-react';
-import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import React, { useState, useEffect } from 'react';
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { jwtDecode } from 'jwt-decode';
 
 
 const LoginForm = () => {
-
-    const [user, setUser] = useState([]);
+    const decodedToken = jwtDecode(localStorage.getItem('token'));
+    const [user, setUser] = useState(null);
     const [profile, setProfile] = useState(null);
     const [formValues, setFormValues] = useState({
         correo: '',
         password: '',
     });
+
     const navigate = useNavigate();
 
     const [notificationVisible, setNotificationVisible] = useState(false);
@@ -32,13 +32,12 @@ const LoginForm = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormValues({...formValues, [name]: value,
+        setFormValues({
+            ...formValues, [name]: value,
         });
     };
 
     const handleLogin = () => {
-
-        // Datos del formulario a enviar a la API
         const userData = {
             Email: formValues.correo,
             Passwrd: formValues.password
@@ -47,10 +46,14 @@ const LoginForm = () => {
         // Realizar la solicitud POST a la API para iniciar sesión
         axios.post("http://localhost:3001/usuarios/login", userData)
             .then(response => {
-                if (response.data.success) {
-                    login(response.data.usuario);
-                    navigate("/");
+                if (response.data.message == 'Login exitoso') {
+                    const token = response.data.token;
+                    localStorage.setItem('token', token);
 
+                    if(decodedToken.rol == "Administrador")
+                        navigate("/dashboard/usuarios");
+                    else
+                        navigate("/");
                 } else {
                     console.log(response.data.message);
                 }
