@@ -10,7 +10,8 @@ export default function MangaDescripcion({ manga }) {
     const handleCardClick = (id) => {
         navigate(`/descripcion/manga/${id}`);
     };
-
+    //TODO: Agregar proceso almacenado para verificar si ya existe en la lista del usuario, si existe se habilita el botón de eliminar o marcar como completado, si no se muestra el de agregar a lista
+    
     const addLater = (id) => {
         const token = localStorage.getItem('token');
         if (!token)

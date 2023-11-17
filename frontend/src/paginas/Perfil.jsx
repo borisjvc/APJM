@@ -70,6 +70,8 @@ export default function Perfil() {
         { menuItem: 'Videojuegos', render: () => <Tab.Pane>{renderList(userLists.videoGames)}</Tab.Pane> },
     ];
 
+    //AQUI DEBERIA MOSTRAR SU IMAGEN Y TITULO Y AL DARLE CLICK TE DEBERIA MANDAR A SU PAGINA DE INFORMACION,
+    //IGUAL SE DEBERIA PODER ELIMINAR DE LA LISTA (O MARCARLO COMO COMPLETADO)??
     const renderList = (list) => (
         <Card.Group>
             {Listas.map((item) => (
