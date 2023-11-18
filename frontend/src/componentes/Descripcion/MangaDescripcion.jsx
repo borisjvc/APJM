@@ -106,7 +106,6 @@ export default function MangaDescripcion({ manga }) {
                     }, 3000);
                 }
             })
-
     };
 
     return (
