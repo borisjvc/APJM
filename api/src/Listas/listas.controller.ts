@@ -35,9 +35,10 @@ export class UsuariosListasController {
         return await this.usuariosListasService.actualizarEstatusEnLista(user, elemento, status, tipo);
     }
 
-    @Get('listas')
+    @Get()
     async obtenerListas() {
-        return await this.usuariosListasService.obtenerListas();
+        const listas = await this.usuariosListasService.obtenerListas();
+        return listas[0];
     }
 
     @Post('added')
