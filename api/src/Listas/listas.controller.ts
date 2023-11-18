@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Put, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
 import { UsuariosListasService } from './listas.service';
 
 @Controller('listas')
@@ -7,12 +7,12 @@ export class UsuariosListasController {
 
     @Get(':usuarioID')
     async leerListaDeUsuario(@Param('usuarioID') usuarioID: number) {
-        return this.usuariosListasService.leerListaDeUsuario(usuarioID);
+        return await this.usuariosListasService.leerListaDeUsuario(usuarioID);
     }
 
-    @Delete(':usuarioID/:elementoID')
-    async eliminarDeLista(@Param('usuarioID') usuarioID: number, @Param('elementoID') elementoID: string) {
-        return this.usuariosListasService.eliminarDeLista(usuarioID, elementoID);
+    @Delete('eliminar/:usuarioID/:elementoID/:tipo')
+    async eliminarDeLista(@Param('usuarioID') usuarioID: number, @Param('elementoID') elementoID: string, @Param('tipo') tipo: string) {
+        return await this.usuariosListasService.eliminarDeLista(usuarioID, elementoID, tipo);
     }
 
     @Post('agregar')
@@ -21,8 +21,8 @@ export class UsuariosListasController {
         @Body('elemento') elemento: string,
         @Body('status') status: string,
         @Body('tipo') tipo: string
-    ) {
-        return this.usuariosListasService.agregarALista(user, elemento, status, tipo);
+        ) {
+        return await this.usuariosListasService.agregarALista(user, elemento, status, tipo);
     }
 
     @Put('status')
@@ -32,23 +32,21 @@ export class UsuariosListasController {
         @Body('status') status: string,
         @Body('tipo') tipo: string
     ) {
-        return this.usuariosListasService.actualizarEstatusEnLista(user, elemento, status, tipo);
+        return await this.usuariosListasService.actualizarEstatusEnLista(user, elemento, status, tipo);
     }
 
     @Get('listas')
     async obtenerListas() {
-        return this.usuariosListasService.obtenerListas();
+        return await this.usuariosListasService.obtenerListas();
     }
 
-    @Get('status')
+    @Post('added')
     async VerificarElementoEnLista(
-        @Query('user') user: number,
-        @Query('elemento') elemento: string,
-        @Query('tipo') tipo: string
+        @Body('user') user: number,
+        @Body('elemento') elemento: string,
+        @Body('tipo') tipo: string
     ) {
-        console.log(user, elemento, tipo);
         const result = await this.usuariosListasService.VerificarElementoEnLista(user, elemento, tipo);
-        console.log(result);
-        return result;
+        return result[0][0];
     }
 }

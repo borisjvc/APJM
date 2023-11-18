@@ -14,8 +14,8 @@ export class UsuariosListasService {
         return lista[0];
     }
 
-    async eliminarDeLista(usuarioID: number, elementoID: string) {
-        return this.entityManager.query('CALL EliminarDeLista(?, ?)', [usuarioID, elementoID]);
+    async eliminarDeLista(usuarioID: number, elementoID: string, tipo: string) {
+        return await this.entityManager.query('CALL EliminarDeLista(?, ?, ?)', [usuarioID, elementoID, tipo]);
     }
 
     async agregarALista(usuarioID: number, elementoID: string, estatus: string, tipo: string) {
@@ -25,12 +25,11 @@ export class UsuariosListasService {
 
     async actualizarEstatusEnLista(usuarioID: number, elementoID: string, estatus: string, tipo: string) {
         const status = await this.entityManager.query('CALL ActualizarEstatusEnLista(?, ?, ?, ?)', [usuarioID, elementoID, estatus, tipo]);
-        console.log(status);
         return status;
     }
 
     async obtenerListas() {
-        return this.entityManager.query('CALL ObtenerListas()');
+        return await this.entityManager.query('CALL ObtenerListas()');
     }
 
     async VerificarElementoEnLista(usuario: number, elemento: string, tipo: string){

@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 
 export default function MangaDescripcion({ manga }) {
     const [message, setMessage] = useState(false);
+    const [messageOk, setMessageOK] = useState(false);
     const [isAddedToList, setIsAddedToList] = useState(false);
     const token = localStorage.getItem('token');
 
@@ -13,11 +14,11 @@ export default function MangaDescripcion({ manga }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getUser();
+        getStatus();
         setMessage(false);
     }, [manga]);
 
-    const getUser = async () => {
+    const getStatus = async () => {
         if (!token) {
             return
         }
@@ -26,10 +27,11 @@ export default function MangaDescripcion({ manga }) {
         const user = decodedToken.id;
 
         const mangaInfo = { user: user, elemento: manga.id, tipo: "Manga" };
-        axios.get("http://localhost:3001/listas/status", { params: mangaInfo })
+
+        axios.post("http://localhost:3001/listas/added", mangaInfo)
             .then(response => {
-                console.log(response.data);
-                setIsAddedToList(response.data.length > 0);
+                const resultado = response.data.Resultado;  // 'EXISTE' o 'NO_EXISTE'
+                setIsAddedToList(resultado == 'EXISTE');
             })
     }
 
@@ -54,6 +56,10 @@ export default function MangaDescripcion({ manga }) {
                         }, 5000);
                     } else {
                         setIsAddedToList(true);
+                        setMessageOK(true)
+                        setTimeout(() => {
+                            setMessageOK(false);
+                        }, 3000);
                     }
                 })
                 .catch(error => {
@@ -63,11 +69,43 @@ export default function MangaDescripcion({ manga }) {
     };
 
     const removeLater = (id) => {
-        // Lógica para eliminar de la lista
+        const decodedToken = jwtDecode(token);
+        const user = decodedToken.id;
+        axios.delete(`http://localhost:3001/listas/eliminar/${user}/${id}/Manga`)
+            .then(response => {
+                if (response.data.affectedRows > 0) {
+                    setMessageOK(true);
+                    setTimeout(() => {
+                        setMessageOK(false);
+                    }, 3000);
+                } else {
+                    setMessage(true);
+                    setTimeout(() => {
+                        setMessage(false);
+                    }, 3000);
+                }
+            })
         setIsAddedToList(false);
     };
 
     const markAsCompleted = (id) => {
+        const decodedToken = jwtDecode(token);
+        const user = decodedToken.id;
+        const newStatus = { user: user, elemento: id, status: "Completado", tipo: "Manga" }
+        axios.put(`http://localhost:3001/listas/status`, newStatus)
+            .then(response => {
+                if (response.data.affectedRows > 0) {
+                    setMessageOK(true);
+                    setTimeout(() => {
+                        setMessageOK(false);
+                    }, 3000);
+                } else {
+                    setMessage(true);
+                    setTimeout(() => {
+                        setMessage(false);
+                    }, 3000);
+                }
+            })
 
     };
 
@@ -77,17 +115,25 @@ export default function MangaDescripcion({ manga }) {
                 <img src={manga.main_picture.large} alt={manga.title} className="manga-image" />
                 <br></br>
                 <br></br>
+
                 {!isAddedToList ? (
                     <Button content="Ver más tarde" icon='bookmark' labelPosition='left' compact color="blue" onClick={() => addLater(manga.id)} />
                 ) : (
                     <ButtonGroup>
+                        <Button content="Completado" icon='check circle' labelPosition='left' compact color="blue" onClick={() => markAsCompleted(manga.id)} />
                         <Button content="Eliminar" icon='remove circle' labelPosition='left' compact color="red" onClick={() => removeLater(manga.id)} />
-                        <Button content="Completado" icon='check circle' labelPosition='left' compact color="green" onClick={() => markAsCompleted(manga.id)} />
                     </ButtonGroup>
                 )}
+
                 {message && (
-                    <Message content="Error al agregar a la lista" color="red"></Message>
+                    <Message content="Ha ocurrido un error" color="red"></Message>
                 )}
+                {messageOk && (
+                    <Message content="Listo" color="teal" icon="check"></Message>
+                )}
+
+
+
                 <br></br>
                 <br></br>
                 <p>Fecha de inicio: {manga.start_date}</p>
