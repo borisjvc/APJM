@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Footer from "../componentes/Footer";
 import PlaceholderCard from "../componentes/CardPlaceholder";
+import Navbar from "../componentes/navbar";
 
 export default function Anime() {
     const [Animes, setAnimes] = useState([]);
@@ -37,6 +38,7 @@ export default function Anime() {
 
     return (
         <>
+            <Navbar />
             <div>
                 <div>
                     <Pagination
@@ -67,7 +69,7 @@ export default function Anime() {
                             </Card>
                         ))
                         : Array.from({ length: 20 }, (_, index) => (
-                            <PlaceholderCard key={`placeholder-${index}`} /> 
+                            <PlaceholderCard key={`placeholder-${index}`} />
                         ))}
                 </Card.Group>
 

@@ -3,6 +3,7 @@ import { Container, Grid, Image, Tab, Form, Button, Card, Icon } from 'semantic-
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
+import Navbar from '../componentes/navbar';
 
 export default function Perfil() {
     const token = localStorage.getItem('token');
@@ -85,44 +86,47 @@ export default function Perfil() {
     );
 
     return (
-        <Container className="emp-profile">
-            <Form>
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={4}>
-                            <div className="profile-img">
-                                <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
-                            </div>
-                        </Grid.Column>
-                        <Grid.Column width={8}>
-                            <div className="profile-head">
-                                <h2>{User.username} </h2>
-                                <h4>Email: {User.email}</h4>
-                            </div>
-                            <Button primary icon labelPosition="left" onClick={handleEdit}>
-                                <Icon name="edit outline" />
-                                Editar Datos
-                            </Button>
-                            {isEditMode && (
-                                <>
-                                    <Button color="green" icon labelPosition="left" onClick={handleSaveChanges}>
-                                        <Icon name="save outline" />
-                                        Guardar Cambios
-                                    </Button>
-                                    <Button color="red" icon labelPosition="left" onClick={handleEdit}> <Icon name="window close" />Cancelar</Button>
-                                </>
-                            )}
-                        </Grid.Column>
-                    </Grid.Row>
+        <>
+            <Navbar />
+            <Container className="emp-profile">
+                <Form>
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column width={4}>
+                                <div className="profile-img">
+                                    <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                                </div>
+                            </Grid.Column>
+                            <Grid.Column width={8}>
+                                <div className="profile-head">
+                                    <h2>{User.username} </h2>
+                                    <h4>Email: {User.email}</h4>
+                                </div>
+                                <Button primary icon labelPosition="left" onClick={handleEdit}>
+                                    <Icon name="edit outline" />
+                                    Editar Datos
+                                </Button>
+                                {isEditMode && (
+                                    <>
+                                        <Button color="green" icon labelPosition="left" onClick={handleSaveChanges}>
+                                            <Icon name="save outline" />
+                                            Guardar Cambios
+                                        </Button>
+                                        <Button color="red" icon labelPosition="left" onClick={handleEdit}> <Icon name="window close" />Cancelar</Button>
+                                    </>
+                                )}
+                            </Grid.Column>
+                        </Grid.Row>
 
-                    <Grid.Row>
-                        <Grid.Column width={16}>
-                            <h2>Ver más tarde</h2>
-                            <Tab panes={panes} />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Form>
-        </Container>
+                        <Grid.Row>
+                            <Grid.Column width={16}>
+                                <h2>Ver más tarde</h2>
+                                <Tab panes={panes} />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Form>
+            </Container>
+        </>
     );
 };

@@ -6,6 +6,7 @@ import JuegosDescripcion from "../componentes/Descripcion/JuegosDescripcion";
 import MangaDescripcion from "../componentes/Descripcion/MangaDescripcion";
 import Footer from "../componentes/Footer";
 import PeliculasDescripcion from "../componentes/Descripcion/PeliculasDescripcion";
+import Navbar from "../componentes/navbar";
 
 export default function Descripcion() {
     const { Categoria, Id } = useParams();
@@ -41,6 +42,7 @@ export default function Descripcion() {
     //agregar trivia 
     return (
         <>
+            <Navbar />
             <div className="descripcion-container">
                 {Categoria === "anime" && (
                     <AnimeDescripcion anime={itemData} />

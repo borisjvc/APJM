@@ -4,6 +4,7 @@ import axios from "axios";
 import PlaceholderCard from "../componentes/CardPlaceholder";
 import { useNavigate } from "react-router-dom";
 import Footer from "../componentes/Footer";
+import Navbar from "../componentes/navbar";
 
 export default function Inicio() {
     const [peliculas, setPeliculas] = useState([]);
@@ -62,6 +63,7 @@ export default function Inicio() {
 
     return (
         <>
+            <Navbar />
             <article>
                 <div className="banner-destacado">
                     <Card.Group itemsPerRow={4}>
@@ -121,7 +123,7 @@ export default function Inicio() {
                 </div>
                 <br></br>
                 <h1>Animes</h1>
-                <Card.Group itemsPerRow={5}>
+                <Card.Group itemsPerRow={10}>
                     {Animes.length > 0
                         ? Animes.map((anime) => (
                             <Card
@@ -143,7 +145,7 @@ export default function Inicio() {
                 <br></br>
 
                 <h1>Mangas</h1>
-                <Card.Group itemsPerRow={5}>
+                <Card.Group itemsPerRow={10}>
                     {Mangas.length > 0
                         ? Mangas.map((manga) => (
                             <Card
@@ -164,7 +166,7 @@ export default function Inicio() {
                 <br />
 
                 <h1>Peliculas</h1>
-                <Card.Group itemsPerRow={5}>
+                <Card.Group itemsPerRow={10}>
                     {peliculas.length > 0
                         ? peliculas.map((pelicula) => (
                             <Card
@@ -185,7 +187,7 @@ export default function Inicio() {
                 </Card.Group>
                 <br></br>
                 <h1>Juegos</h1>
-                <Card.Group itemsPerRow={5}>
+                <Card.Group itemsPerRow={10}>
                     {juegos.length > 0
                         ? juegos.map((juego) => (
                             <Card
