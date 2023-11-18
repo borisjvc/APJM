@@ -13,6 +13,7 @@ import Registro from './paginas/Registro';
 import Trivia from './paginas/Trivia';
 import Usuarios from './paginas/Dashboard/Dashboard_Usuarios';
 import Perfil from './paginas/Perfil';
+import DashListas from './paginas/Dashboard/Dashboard_Listas';
 
 function App() {
   const router = createBrowserRouter([
@@ -59,7 +60,7 @@ function App() {
     }, 
     {
       path: "/dashboard/listas",
-      element: <Usuarios />
+      element: <DashListas />
     },
     {
       path: "/perfil",
@@ -71,7 +72,6 @@ function App() {
   return (
 
     <div>
-      <Navbar />
       <RouterProvider router={router} />
     </div>
 

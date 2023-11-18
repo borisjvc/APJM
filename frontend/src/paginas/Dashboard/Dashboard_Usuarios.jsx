@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Icon, Table, Modal, Input, Dropdown, Label } from "semantic-ui-react";
 import axios from "axios";
+import NavbarDash from "../../componentes/Navbar-admin";
 
 export default function Usuarios() {
     const [usuarios, setUsuarios] = useState([]);
@@ -12,6 +13,7 @@ export default function Usuarios() {
     });
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState('');
+    const [searchTerm, setSearchTerm] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editedUser, setEditedUser] = useState({
         id: "",
@@ -112,9 +114,26 @@ export default function Usuarios() {
             });
     };
 
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const filteredUsuarios = usuarios.filter((usuario) =>
+        Object.values(usuario).some((value) =>
+            String(value).toLowerCase().includes(searchTerm.toLowerCase())
+        )
+    );
+
 
     return (
         <>
+            <NavbarDash />
+            <Input
+                icon="search"
+                placeholder="Buscar..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+            /><br /><br />
             <Button content="Agregar usuario" color="blue" icon='add' onClick={handleOpenAddModal}></Button>
             <Table celled inverted selectable>
                 <Table.Header>
@@ -129,7 +148,7 @@ export default function Usuarios() {
                 </Table.Header>
 
                 <Table.Body>
-                    {usuarios.map((user) => (
+                    {filteredUsuarios.map((user) => (
                         <Table.Row key={user.id}>
                             <Table.Cell>{user.id}</Table.Cell>
                             <Table.Cell>{user.username}</Table.Cell>

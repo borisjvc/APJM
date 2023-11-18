@@ -15,8 +15,7 @@ export default function Navbar() {
     }
 
     const handleSearch = () => {
-        // Falta implementar la busqueda usando las apis
-        console.log('Search Query:', searchQuery);
+        
     }
 
     return (
