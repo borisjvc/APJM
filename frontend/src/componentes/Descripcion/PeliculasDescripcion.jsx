@@ -20,7 +20,7 @@ export default function PeliculasDescripcion({ pelicula }) {
     }, [])
 
     const handleCardClick = (Id) => {
-        fetchPeliculas();
+        fetchData();
         setPeliculas([]);
         navigate(`/descripcion/peliculas/${Id}`);
 

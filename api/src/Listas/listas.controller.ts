@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Delete, Query } from '@nestjs/common';
 import { UsuariosListasService } from './listas.service';
 
 @Controller('listas')
@@ -11,7 +11,7 @@ export class UsuariosListasController {
     }
 
     @Delete(':usuarioID/:elementoID')
-    async eliminarDeLista(@Param('usuarioID') usuarioID: number, @Param('elementoID') elementoID: number) {
+    async eliminarDeLista(@Param('usuarioID') usuarioID: number, @Param('elementoID') elementoID: string) {
         return this.usuariosListasService.eliminarDeLista(usuarioID, elementoID);
     }
 
@@ -19,18 +19,36 @@ export class UsuariosListasController {
     async agregarALista(
         @Body('user') user: number,
         @Body('elemento') elemento: string,
-        @Body('status') status: string) {
-        return this.usuariosListasService.agregarALista(user, elemento, status);
+        @Body('status') status: string,
+        @Body('tipo') tipo: string
+    ) {
+        return this.usuariosListasService.agregarALista(user, elemento, status, tipo);
     }
 
     @Put('status')
-    async actualizarEstatusEnLista(@Body() body: { usuarioID: number; elementoID: number; estatus: string }) {
-        const { usuarioID, elementoID, estatus } = body;
-        return this.usuariosListasService.actualizarEstatusEnLista(usuarioID, elementoID, estatus);
+    async actualizarEstatusEnLista(
+        @Body('user') user: number,
+        @Body('elemento') elemento: string,
+        @Body('status') status: string,
+        @Body('tipo') tipo: string
+    ) {
+        return this.usuariosListasService.actualizarEstatusEnLista(user, elemento, status, tipo);
     }
 
     @Get('listas')
     async obtenerListas() {
         return this.usuariosListasService.obtenerListas();
+    }
+
+    @Get('status')
+    async VerificarElementoEnLista(
+        @Query('user') user: number,
+        @Query('elemento') elemento: string,
+        @Query('tipo') tipo: string
+    ) {
+        console.log(user, elemento, tipo);
+        const result = await this.usuariosListasService.VerificarElementoEnLista(user, elemento, tipo);
+        console.log(result);
+        return result;
     }
 }
