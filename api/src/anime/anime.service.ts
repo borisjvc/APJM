@@ -80,4 +80,29 @@ export class AnimeService {
     }
   }
 
+  async searchAnime(search: string) {
+    const query = `
+                query {
+                    Page {
+                        media(search: "${search}", type: ANIME) {
+                            id
+                            title {
+                                romaji
+                            }
+                            coverImage {
+                                large
+                            }
+                        }
+                    }
+                }
+            `;
+
+    try {
+      
+      const response = await axios.post(this.aniListApiUrl, { query });
+      return response.data.data.Page.media;
+    } catch (error) {
+      throw new Error(`Error al buscar anime: ${error.message}`);
+    }
+  }
 }

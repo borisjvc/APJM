@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Icon, Input } from 'semantic-ui-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
     const [searchVisible, setSearchVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const token = localStorage.getItem('token');
+    const navigate = useNavigate();
 
     const toggleSearchBar = () => {
         setSearchVisible(!searchVisible);
@@ -14,8 +16,8 @@ export default function Navbar() {
         setSearchQuery(e.target.value);
     }
 
-    const handleSearch = () => {
-        
+    const handleSearch = async () => {
+        navigate(`/resultados/${searchQuery}`);
     }
 
     return (

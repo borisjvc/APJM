@@ -19,4 +19,9 @@ export class PeliculasController {
     async getRandomMovies() {
         return await this.peliculasService.getRandomMovies();
     }
+
+    @Get('search')
+    async searchMovie(@Query('search') search: string){
+        return await this.peliculasService.searchMovies(search);
+    }
 }

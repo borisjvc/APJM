@@ -16,4 +16,10 @@ export class JuegosController {
         const gameInfo = await this.JuegosService.getGamesById(id);
         return gameInfo;
     }
+
+    @Get('search')
+    async searchGames(@Query('search') search: string) {
+        const searchResult = await this.JuegosService.searchGames(search);
+        return searchResult;
+    }
 }
