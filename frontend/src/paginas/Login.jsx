@@ -84,8 +84,8 @@ const LoginForm = () => {
                     Passwrd: response.data.name,
                     Username: response.data.name
                 }
-                
-                const resRegistro = await axios.post("http://localhost:3001/usuarios", datos);
+
+                const resRegistro = await axios.post("http://localhost:3001/usuarios", datos);//si esto da error entonces hacemos login porque ya existe la cuenta
 
                 //const token = response.data.token;
                 //localStorage.setItem('token', token);
