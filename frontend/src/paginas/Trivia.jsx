@@ -17,6 +17,16 @@ const cardStyle = {
     textAlign: "left",
 };
 
+const resultadoFinalStyle = {
+    marginTop: "20px",
+    padding: "20px",
+    border: "2px solid #F7B829",
+    borderRadius: "10px",
+    backgroundColor: "#22211F",
+    color: "#FFFFFF",
+    textAlign: "center",
+};
+
 export default function Trivia() {
     const [preguntas, setPreguntas] = useState([]);
     const [respuestasUsuario, setRespuestasUsuario] = useState({});
@@ -27,7 +37,6 @@ export default function Trivia() {
 
     useEffect(() => {
         setTiempoRestante(10);
-
         // Iniciar el temporizador de respuesta
         const temporizadorRespuesta = setInterval(() => {
             setTiempoRestante((prevTiempo) => prevTiempo - 1);
@@ -65,6 +74,14 @@ export default function Trivia() {
         } catch (error) {
             console.error("Error al obtener trivia: ", error);
         }
+    };
+    
+    const reiniciarTrivia = () => {
+        setRespuestasUsuario({});
+        setResultado({});
+        setPreguntaActual(0);
+        setTiempoRestante(10);
+        setPreguntaAutomatica(false);
     };
 
     useEffect(() => {
@@ -140,15 +157,21 @@ export default function Trivia() {
                 </Card>
             )}
             {preguntaActual === preguntas.length && (
-                <div>
+                <div style={resultadoFinalStyle}>
                     <h2>Resultado Final:</h2>
-                    <ul>
+                    <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
                         {preguntas.map((pregunta, index) => (
                             <li key={index}>
-                                Pregunta {index + 1}: {resultado[index] ? "Correcta" : "Incorrecta"}
+                                Pregunta {index + 1}:{" "}
+                                <span style={{ color: resultado[index] ? "#00FF00" : "#FF0000" }}>
+                                    {resultado[index] ? "Correcta" : "Incorrecta"}
+                                </span>
                             </li>
                         ))}
                     </ul>
+                    <Button color="yellow" onClick={reiniciarTrivia}>
+                        Volver a Jugar
+                    </Button>
                 </div>
             )}
         </div>
