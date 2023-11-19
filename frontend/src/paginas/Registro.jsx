@@ -1,79 +1,124 @@
-import React from "react";
-import { Formik, Form, Field } from "formik";
-import { Button, Grid, Segment, Header } from "semantic-ui-react";
+import React, { useState } from "react";
 import axios from "axios";
+import Navbar from "../componentes/navbar";
+import { Button, Grid, Segment, Header, Form, Message } from "semantic-ui-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Registro() {
-    const initialValues = {
-        Username: "",
-        Email: "",
-        Passwrd: "",
-    };
+    const [notificationVisible, setNotificationVisible] = useState(false);
+    const [error, setError] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const navigate = useNavigate();
+    const [formValues, setFormValues] = useState({
+        Email: '',
+        Passwrd: '',
+        Username: '',
+    });
 
-    const handleRegistro = async (values, { setSubmitting }) => {
+    const handleRegistro = async () => {
+        // Reiniciar notificaciones
+        setNotificationVisible(false);
+        setError(false);
+
+        // Verificar que ingrese todos los datos
+        if (!formValues.Email || !formValues.Passwrd || !formValues.Username) {
+            setNotificationVisible(true);
+            return;
+        }
+
         try {
-            const response = await axios.post("http://localhost:3001/usuarios", values);
+            const response = await axios.post("http://localhost:3001/usuarios", formValues);
+            setSuccess(true);
             console.log("Registro exitoso", response.data);
+            
+            setTimeout(() => {
+                navigate("/login");
+            }, 3000);
         } catch (error) {
             console.error("Error al registrar usuario", error.response.data);
-        } finally {
-            setSubmitting(false);
+            setError(true);
         }
     };
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({
+            ...formValues,
+            [name]: value,
+        });
+    };
+
     return (
-        <Grid textAlign="center" verticalAlign="middle" style={{ height: "100vh" }}>
-            <Grid.Column style={{ maxWidth: 450 }}>
-                <Segment stacked>
-                    <Formik initialValues={initialValues} onSubmit={handleRegistro}>
-                        {({ isSubmitting }) => (
-                            <Form size="large">
-                                <Header as="h2" color="grey" textAlign="center">
-                                    Crear cuenta
-                                </Header>
-                                <Field
-                                    fluid
-                                    name="Username"
-                                    type="text"
-                                    icon="user"
-                                    iconPosition="left"
-                                    placeholder="Nombre de usuario"
-                                    as={Form.Input}
-                                    required
+        <>
+            <Navbar />
+            <Grid textAlign="center" verticalAlign="middle" style={{ height: '100vh' }}>
+                <Grid.Column style={{ maxWidth: 450 }}>
+                    <Form error size="large" >
+                        <Segment stacked>
+                            <Header as="h2" color="black" textAlign="center">
+                                Crear cuenta
+                            </Header>
+                            <Form.Input
+                                fluid
+                                icon="mail"
+                                iconPosition="left"
+                                name="Email"
+                                placeholder="Correo electrónico"
+                                value={formValues.Email}
+                                onChange={handleInputChange}
+                            />
+                            <Form.Input
+                                fluid
+                                icon="user"
+                                iconPosition="left"
+                                name="Username"
+                                placeholder="Nombre de usuario"
+                                value={formValues.Username}
+                                onChange={handleInputChange}
+                            />
+                            <Form.Input
+                                fluid
+                                icon="lock"
+                                iconPosition="left"
+                                placeholder="Contraseña"
+                                type="password"
+                                name="Passwrd"
+                                value={formValues.Passwrd}
+                                onChange={handleInputChange}
+                            />
+                            {notificationVisible && (
+                                <Message
+                                    error
+                                    header='Error en el formulario'
+                                    content='Por favor, completa todos los campos.'
                                 />
-                                <Field
-                                    fluid
-                                    name="Email"
-                                    type="email"
-                                    icon="mail"
-                                    iconPosition="left"
-                                    placeholder="Correo electrónico"
-                                    as={Form.Input}
-                                    required
+                            )}
+                            {error && (
+                                <Message
+                                    error
+                                    header='Error al crear la cuenta'
+                                    content='Existe una cuenta con el mismo correo.'
                                 />
-                                <Field
-                                    fluid
-                                    name="Passwrd"
-                                    type="password"
-                                    icon="lock"
-                                    iconPosition="left"
-                                    placeholder="Contraseña"
-                                    as={Form.Input}
-                                    required
+                            )}
+                            {success && (
+                                <Message
+                                    positive
+                                    header='Registro exitoso'
+                                    content='La cuenta se ha creado correctamente. Redireccionando...'
                                 />
-                                <Button color="grey" type="submit" disabled={isSubmitting}>
-                                    Crear cuenta
-                                </Button>
-                                <Button color="red" href="/">
-                                    Cancelar
-                                </Button>
-                            </Form>
-                        )}
-                    </Formik>
-                </Segment>
-            </Grid.Column>
-        </Grid>
+                            )}
+                            <br></br>
+                            <br></br>
+                            <Button color="blue" onClick={handleRegistro} >
+                                Crear cuenta
+                            </Button>
+                            <Button color="red" href="/">
+                                Cancelar
+                            </Button>
+                        </Segment>
+                    </Form>
+                </Grid.Column>
+            </Grid>
+        </>
     );
 };
-
-

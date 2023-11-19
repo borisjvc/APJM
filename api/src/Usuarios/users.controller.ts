@@ -16,9 +16,8 @@ export class UsuariosController {
             const newUser = await this.usuariosService.crearUsuario(username, passwrd, email, rol);
             return newUser;
         } catch (error) {
-            return { message: error };
+            throw new Error(`${error.message}`);
         }
-
     }
 
     @Get(':id')
