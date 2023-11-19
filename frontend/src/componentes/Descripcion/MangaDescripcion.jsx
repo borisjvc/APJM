@@ -46,7 +46,7 @@ export default function MangaDescripcion({ manga }) {
             const decodedToken = jwtDecode(token);
             const user = decodedToken.id;
 
-            const datos = { user: user, elemento: id, status: "Ver más tarde", tipo: "Manga" }
+            const datos = { user: user, elemento: id, status: "Ver más tarde", tipo: "Manga", titulo: manga.title, img: manga.main_picture.large }
             axios.post(`http://localhost:3001/listas/agregar`, datos)
                 .then(response => {
                     if (response.data.affectedRows === 0) {

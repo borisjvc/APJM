@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Image, Tab, Form, Button, Card, Icon } from 'semantic-ui-react';
+import { Container, Grid, Image, Tab, Form, Button, Card, Icon, Segment } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
@@ -11,10 +11,6 @@ export default function Perfil() {
     const [isEditMode, setIsEditMode] = useState(false);
     const [User, setUser] = useState('');
     const [Listas, setListas] = useState([]);
-    const [Anime, setAnime] = useState([]);
-    const [Peliculas, setPeliculas] = useState([]);
-    const [Juegos, setJuegos] = useState([]);
-    const [Manga, setManga] = useState([]);
 
     const fetchData = async () => {
         if (!token) {
@@ -32,20 +28,9 @@ export default function Perfil() {
         }
     };
 
-    const fetchImg = async () => {
-        try {
-            //TODO: Conseguir la informacion de cada anime,pelicula, etc para mostrar una card que tenga su imagen y nombre
-            const response = await axios.get(`http://localhost:3001/anime/`);
-            setAnime(response)
-        } catch (error) {
-            console.error("Error al obtener imagenes: ", error);
-        }
-    };
-
     useEffect(() => {
         fetchData();
-        fetchImg();
-    }, []);
+    }, [token]);
 
     const handleEdit = () => {
         setIsEditMode(!isEditMode);
@@ -57,51 +42,84 @@ export default function Perfil() {
         setIsEditMode(false);
     };
 
-    const userLists = {
-        animes: ['Attack on Titan', 'My Hero Academia', 'Death Note'],
-        mangas: ['One Piece', 'Naruto', 'Demon Slayer'],
-        movies: ['Inception', 'The Shawshank Redemption', 'The Dark Knight'],
-        videoGames: ['The Legend of Zelda', 'Super Mario Odyssey', 'Final Fantasy VII'],
+    const logout = () => {
+        localStorage.removeItem("token");
+        navigate("/");
+    };
+
+    const handleCardClick = (id, tipo) => {
+        navigate(`/descripcion/${tipo.toLowerCase()}/${id}`);
     };
 
     const panes = [
-        { menuItem: 'Animes', render: () => <Tab.Pane>{renderList(userLists.animes)}</Tab.Pane> },
-        { menuItem: 'Mangas', render: () => <Tab.Pane>{renderList(userLists.mangas)}</Tab.Pane> },
-        { menuItem: 'Peliculas', render: () => <Tab.Pane>{renderList(userLists.movies)}</Tab.Pane> },
-        { menuItem: 'Videojuegos', render: () => <Tab.Pane>{renderList(userLists.videoGames)}</Tab.Pane> },
+        { menuItem: 'Animes', render: () => <Tab.Pane>{renderList(Listas, 'Anime')}</Tab.Pane> },
+        { menuItem: 'Mangas', render: () => <Tab.Pane>{renderList(Listas, 'Manga')}</Tab.Pane> },
+        { menuItem: 'Peliculas', render: () => <Tab.Pane>{renderList(Listas, 'Peliculas')}</Tab.Pane> },
+        { menuItem: 'Videojuegos', render: () => <Tab.Pane>{renderList(Listas, 'Juegos')}</Tab.Pane> },
     ];
 
-    //AQUI DEBERIA MOSTRAR SU IMAGEN Y TITULO Y AL DARLE CLICK TE DEBERIA MANDAR A SU PAGINA DE INFORMACION,
-    //IGUAL SE DEBERIA PODER ELIMINAR DE LA LISTA (O MARCARLO COMO COMPLETADO)??
-    const renderList = (list) => (
-        <Card.Group>
-            {Listas.map((item) => (
-                <Card key={item.ElementoID}>
-                    <Card.Content>
-                        <Card.Header>{item.Estatus}: {item.ElementoID}</Card.Header>
-                    </Card.Content>
+    const renderList = (list, tipo) => {
+        const verMasTardeItems = list
+            .filter((item) => item.Tipo === tipo && item.Estatus === 'Ver más tarde')
+            .map((item) => (
+                <Card
+                    key={item.ElementoID}
+                    color="yellow"
+                    raised
+                    link
+                    className="card-container"
+                    onClick={() => handleCardClick(item.ElementoID, item.Tipo)}
+                >
+                    <Image src={item.Img || "https://via.placeholder.com/300x200"} className="card-image" />
+                    <div className="card-title">{item.Titulo}</div>
                 </Card>
-            ))}
-        </Card.Group>
-    );
+            ));
+
+        const completadosItems = list
+            .filter((item) => item.Tipo === tipo && item.Estatus === 'Completado')
+            .map((item) => (
+                <Card
+                    key={item.ElementoID}
+                    color="yellow"
+                    raised
+                    link
+                    className="card-container"
+                    onClick={() => handleCardClick(item.ElementoID, item.Tipo)}
+                >
+                    <Image src={item.Img || "https://via.placeholder.com/300x200"} className="card-image" />
+                    <div className="card-title">{item.Titulo}</div>
+                </Card>
+            ));
+
+        return (
+            <Segment style={{ color: 'black' }}>
+                <h2>Ver más tarde</h2>
+                <Card.Group itemsPerRow={5}>{verMasTardeItems}</Card.Group>
+
+                <h2>Completados</h2>
+                <Card.Group itemsPerRow={5}>{completadosItems}</Card.Group>
+
+            </Segment>
+        );
+    };
 
     return (
         <>
             <Navbar />
-            <Container className="emp-profile">
+            <Container className="emp-profile" style={{ background: `linear-gradient(to top, #22211F, #F7B829)`, color: 'black' }}>
                 <Form>
-                    <Grid>
+                    <Grid >
                         <Grid.Row>
                             <Grid.Column width={4}>
                                 <div className="profile-img">
-                                    <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                                    <Image src="https://cdn2.iconfinder.com/data/icons/instagram-outline/19/11-512.png" alt="pfp" />
                                 </div>
                             </Grid.Column>
                             <Grid.Column width={8}>
                                 <div className="profile-head">
                                     <h2>{User.username} </h2>
                                     <h4>Email: {User.email}</h4>
-                                </div>
+                                </div><br />
                                 <Button primary icon labelPosition="left" onClick={handleEdit}>
                                     <Icon name="edit outline" />
                                     Editar Datos
@@ -115,18 +133,19 @@ export default function Perfil() {
                                         <Button color="red" icon labelPosition="left" onClick={handleEdit}> <Icon name="window close" />Cancelar</Button>
                                     </>
                                 )}
+                                <Button color="red" content="Cerrar sesión" onClick={logout}></Button>
                             </Grid.Column>
                         </Grid.Row>
 
-                        <Grid.Row>
-                            <Grid.Column width={16}>
-                                <h2>Ver más tarde</h2>
-                                <Tab panes={panes} />
+                        <Grid.Row >
+                            <Grid.Column width={16} >
+                                <Tab panes={panes}/>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </Form>
             </Container>
+            
         </>
     );
 };

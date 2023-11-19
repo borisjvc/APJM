@@ -20,9 +20,11 @@ export class UsuariosListasController {
         @Body('user') user: number,
         @Body('elemento') elemento: string,
         @Body('status') status: string,
-        @Body('tipo') tipo: string
-        ) {
-        return await this.usuariosListasService.agregarALista(user, elemento, status, tipo);
+        @Body('tipo') tipo: string,
+        @Body('titulo') titulo: string,
+        @Body('img') img: string
+    ) {
+        return await this.usuariosListasService.agregarALista(user, elemento, status, tipo, titulo, img);
     }
 
     @Put('status')

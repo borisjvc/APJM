@@ -81,7 +81,7 @@ export default function DashListas() {
                         <Table.Row key={lista.ID}>
                             <Table.Cell>{index + 1}</Table.Cell>
                             <Table.Cell>{lista.NombreUsuario}</Table.Cell>
-                            <Table.Cell>{lista.ElementoID}</Table.Cell>
+                            <Table.Cell>{lista.Titulo}</Table.Cell>
                             <Table.Cell>{lista.Estatus}</Table.Cell>
                             <Table.Cell>{lista.Tipo}</Table.Cell>
                             <Table.Cell>

@@ -40,7 +40,7 @@ export default function PeliculasDescripcion({ pelicula }) {
         const decodedToken = jwtDecode(token);
         const user = decodedToken.id;
 
-        const Info = { user: user, elemento: pelicula.id, tipo: "Pelicula" };
+        const Info = { user: user, elemento: pelicula.id, tipo: "Peliculas" };
 
         axios.post("http://localhost:3001/listas/added", Info)
             .then(response => {
@@ -56,7 +56,7 @@ export default function PeliculasDescripcion({ pelicula }) {
             const decodedToken = jwtDecode(token);
             const user = decodedToken.id;
 
-            const datos = { user: user, elemento: id, status: "Ver más tarde", tipo: "Pelicula" }
+            const datos = { user: user, elemento: id, status: "Ver más tarde", tipo: "Peliculas", titulo: pelicula.titleText.text, img: pelicula.primaryImage.url }
             axios.post(`http://localhost:3001/listas/agregar`, datos)
                 .then(response => {
                     if (response.data.affectedRows === 0) {
@@ -81,7 +81,7 @@ export default function PeliculasDescripcion({ pelicula }) {
     const removeLater = (id) => {
         const decodedToken = jwtDecode(token);
         const user = decodedToken.id;
-        axios.delete(`http://localhost:3001/listas/eliminar/${user}/${id}/Pelicula`)
+        axios.delete(`http://localhost:3001/listas/eliminar/${user}/${id}/Peliculas`)
             .then(response => {
                 if (response.data.affectedRows > 0) {
                     setMessageOK(true);
@@ -101,7 +101,7 @@ export default function PeliculasDescripcion({ pelicula }) {
     const markAsCompleted = (id) => {
         const decodedToken = jwtDecode(token);
         const user = decodedToken.id;
-        const newStatus = { user: user, elemento: id, status: "Completado", tipo: "Pelicula" }
+        const newStatus = { user: user, elemento: id, status: "Completado", tipo: "Peliculas" }
         axios.put(`http://localhost:3001/listas/status`, newStatus)
             .then(response => {
                 if (response.data.affectedRows > 0) {

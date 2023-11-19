@@ -43,7 +43,7 @@ export default function AnimeDescripcion({ anime }) {
             const decodedToken = jwtDecode(token);
             const user = decodedToken.id;
 
-            const datos = { user: user, elemento: id, status: "Ver más tarde", tipo: "Anime" }
+            const datos = { user: user, elemento: id, status: "Ver más tarde", tipo: "Anime", titulo: anime.title.romaji, img: anime.coverImage.large }
             axios.post(`http://localhost:3001/listas/agregar`, datos)
                 .then(response => {
                     if (response.data.affectedRows === 0) {
