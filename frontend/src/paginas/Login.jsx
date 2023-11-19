@@ -78,12 +78,13 @@ const LoginForm = () => {
                         Accept: 'application/json'
                     }
                 });
-                console.log(response.data)
+
                 const datos = {
-                    Username: response.data.name,
                     Email: response.data.email,
-                    Passwrd: response.name
+                    Passwrd: response.data.name,
+                    Username: response.data.name
                 }
+                
                 const resRegistro = await axios.post("http://localhost:3001/usuarios", datos);
 
                 //const token = response.data.token;
