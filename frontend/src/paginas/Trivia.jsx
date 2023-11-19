@@ -25,7 +25,7 @@ export default function Trivia() {
     const [preguntaAutomatica, setPreguntaAutomatica] = useState(false);
 
     useEffect(() => {
-        setTiempoRestante(10);
+        setTiempoRestante(15);
 
         // Iniciar el temporizador de respuesta
         const temporizadorRespuesta = setInterval(() => {
