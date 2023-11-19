@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PlaceholderCard from "../componentes/CardPlaceholder";
 import Footer from "../componentes/Footer";
+import Navbar from "../componentes/navbar";
 
 export default function Juegos() {
     const [juegos, setJuegos] = useState([]);
@@ -38,7 +39,7 @@ export default function Juegos() {
 
     return (
         <>
-
+            <Navbar/>
             <div>
                 <div>
                     <Pagination

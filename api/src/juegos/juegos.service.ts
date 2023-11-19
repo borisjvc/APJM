@@ -29,4 +29,13 @@ export class JuegosService {
             throw new Error(`Error al obtener datos del juego: ${error.message}`);
         }
     }
+
+    async searchGames(search: string) {
+        try {
+            const response = await axios.get(`https://api.rawg.io/api/games?key=${this.apiKey}&search=${search}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(`Error al buscar: ${error.message}`);
+        }
+    }
 }

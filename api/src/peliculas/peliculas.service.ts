@@ -61,4 +61,20 @@ export class PeliculasService {
             throw new Error(`Error al obtener lista de peliculas random: ${error.message}`);
         }
     }
+
+
+    async searchMovies(search: string) {
+        try {
+            const response = await axios.get(`https://moviesdatabase.p.rapidapi.com/titles/search/title/${search}`, {
+                headers: {
+                    'X-RapidAPI-Key': this.apiKey,
+                    'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
+                },
+            });
+            return response.data.results;
+        } catch (error) {
+            throw new Error(`Error al buscar peliculas: ${error.message}`);
+        }
+
+    }
 }

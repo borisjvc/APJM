@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Radio, Button } from "semantic-ui-react";
 import Footer from "../componentes/Footer";
+import Navbar from "../componentes/navbar";
 
 const decodeHTML = (html) => {
     const txt = document.createElement("textarea");
@@ -99,6 +100,7 @@ export default function Trivia() {
 
     return (
         <div>
+            <Navbar />
             <h1>Trivia</h1>
             {preguntas.length > 0 && preguntaActual < preguntas.length && (
                 <Card style={cardStyle}>
@@ -132,7 +134,7 @@ export default function Trivia() {
                         </div>
                     ) : (
                         <Button color="green" onClick={verificarRespuesta}>
-                            Verificar Respuesta 
+                            Verificar Respuesta
                         </Button>
                     )}
                 </Card>

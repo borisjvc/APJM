@@ -7,30 +7,47 @@ export class UsuariosListasController {
 
     @Get(':usuarioID')
     async leerListaDeUsuario(@Param('usuarioID') usuarioID: number) {
-        return this.usuariosListasService.leerListaDeUsuario(usuarioID);
+        return await this.usuariosListasService.leerListaDeUsuario(usuarioID);
     }
 
-    @Delete(':usuarioID/:elementoID')
-    async eliminarDeLista(@Param('usuarioID') usuarioID: number, @Param('elementoID') elementoID: number) {
-        return this.usuariosListasService.eliminarDeLista(usuarioID, elementoID);
+    @Delete('eliminar/:usuarioID/:elementoID/:tipo')
+    async eliminarDeLista(@Param('usuarioID') usuarioID: number, @Param('elementoID') elementoID: string, @Param('tipo') tipo: string) {
+        return await this.usuariosListasService.eliminarDeLista(usuarioID, elementoID, tipo);
     }
 
     @Post('agregar')
     async agregarALista(
         @Body('user') user: number,
         @Body('elemento') elemento: string,
-        @Body('status') status: string) {
-        return this.usuariosListasService.agregarALista(user, elemento, status);
+        @Body('status') status: string,
+        @Body('tipo') tipo: string
+        ) {
+        return await this.usuariosListasService.agregarALista(user, elemento, status, tipo);
     }
 
     @Put('status')
-    async actualizarEstatusEnLista(@Body() body: { usuarioID: number; elementoID: number; estatus: string }) {
-        const { usuarioID, elementoID, estatus } = body;
-        return this.usuariosListasService.actualizarEstatusEnLista(usuarioID, elementoID, estatus);
+    async actualizarEstatusEnLista(
+        @Body('user') user: number,
+        @Body('elemento') elemento: string,
+        @Body('status') status: string,
+        @Body('tipo') tipo: string
+    ) {
+        return await this.usuariosListasService.actualizarEstatusEnLista(user, elemento, status, tipo);
     }
 
-    @Get('listas')
+    @Get()
     async obtenerListas() {
-        return this.usuariosListasService.obtenerListas();
+        const listas = await this.usuariosListasService.obtenerListas();
+        return listas[0];
+    }
+
+    @Post('added')
+    async VerificarElementoEnLista(
+        @Body('user') user: number,
+        @Body('elemento') elemento: string,
+        @Body('tipo') tipo: string
+    ) {
+        const result = await this.usuariosListasService.VerificarElementoEnLista(user, elemento, tipo);
+        return result[0][0];
     }
 }

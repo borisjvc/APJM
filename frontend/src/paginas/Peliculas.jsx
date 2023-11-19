@@ -4,6 +4,7 @@ import axios from "axios";
 import Footer from "../componentes/Footer";
 import { useNavigate } from "react-router-dom";
 import PlaceholderCard from "../componentes/CardPlaceholder";
+import Navbar from "../componentes/navbar";
 
 export default function Peliculas() {
     const [totalPages, setTotalPages] = useState(10);
@@ -39,6 +40,7 @@ export default function Peliculas() {
 
     return (
         <>
+            <Navbar />
             <div>
                 <div>
                     <Pagination

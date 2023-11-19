@@ -24,4 +24,14 @@ export class MangaController {
             throw new Error(`${error.message}`)
         }
     }
+
+    @Get('search')
+    async searchMangas(@Query('search') search: string){
+        try{
+            const mangaSearch = await this.mangaService.searchMangas(search);
+            return mangaSearch;
+        }catch(error){
+            throw new Error(`${error.message}`);
+        }
+    }
 }

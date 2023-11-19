@@ -38,6 +38,19 @@ export class MangaService {
         } catch (error) {
             throw new Error(`Error al obtener datos del manga: ${error.message}`)
         }
+    }
 
+    async searchMangas(search: string) {
+        try {
+            const response = await axios.get(`https://api.myanimelist.net/v2/manga?q=${search}`, {
+                headers: {
+                    'X-MAL-CLIENT-ID': "323b060c728ec63f220488ff6b2f0cd3",
+                },
+            });
+            const mangaInfo = response.data.data;
+            return mangaInfo;
+        } catch (error) {
+            throw new Error(`Error al buscar mangas: ${error.message}`)
+        }
     }
 }
