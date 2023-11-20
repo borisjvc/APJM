@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Table, Button, Icon, Modal, Input } from "semantic-ui-react";
 import axios from "axios";
 import NavbarDash from "../../componentes/Navbar-admin";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 export default function DashListas() {
+    const token = localStorage.getItem('token');
+    const navigate = useNavigate();
     const [listas, setListas] = useState([]);
     const [selectedLista, setSelectedLista] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
@@ -19,8 +23,19 @@ export default function DashListas() {
     };
 
     useEffect(() => {
+        verificarAcceso();
         fetchListas();
     }, []);
+
+    const verificarAcceso = () => {
+        if (!token) {
+            navigate("/login");
+        } else {
+            const decodedToken = jwtDecode(token);
+            if (decodedToken.rol == 'Usuario')
+                navigate('/');
+        }
+    }
 
     const handleEditClick = (lista) => {
         setSelectedLista(lista);
