@@ -10,6 +10,7 @@ export default function Perfil() {
     const navigate = useNavigate();
     const [isEditMode, setIsEditMode] = useState(false);
     const [User, setUser] = useState('');
+    const [Ubicacion, setUbicacion] = useState(null)
     const [Listas, setListas] = useState([]);
     const [editedUser, setEditedUser] = useState({
         username: '',
@@ -26,6 +27,9 @@ export default function Perfil() {
 
                 const response = await axios.get(`http://localhost:3001/listas/${decodedToken.id}`);
                 setListas(response.data);
+
+                const ubicacion = await axios.get(`http://localhost:3001/geolocation`);
+                setUbicacion(ubicacion.data.flag.emoji)
             } catch (error) {
                 console.error("Error al obtener listas: ", error);
             }
@@ -129,7 +133,7 @@ export default function Perfil() {
                             </Grid.Column>
                             <Grid.Column width={8}>
                                 <div className="profile-head">
-                                    <h2>{User.username} </h2>
+                                    <h2>{User.username} {Ubicacion}</h2>
                                     <h4>Email: {User.email}</h4>
                                 </div><br />
 
