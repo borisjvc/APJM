@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Image, Tab, Form, Button, Card, Icon, Segment } from 'semantic-ui-react';
+import { Container, Grid, Image, Tab, Form, Button, Card, Icon, Segment, Input } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
@@ -11,6 +11,10 @@ export default function Perfil() {
     const [isEditMode, setIsEditMode] = useState(false);
     const [User, setUser] = useState('');
     const [Listas, setListas] = useState([]);
+    const [editedUser, setEditedUser] = useState({
+        username: '',
+        passwrd: '',
+    });
 
     const fetchData = async () => {
         if (!token) {
@@ -37,9 +41,17 @@ export default function Perfil() {
     };
 
     const handleSaveChanges = () => {
-        // Implementa la lógica para guardar los cambios en la base de datos
-        // Puedes hacer una solicitud PUT a la API para actualizar los datos del usuario
-        setIsEditMode(false);
+        axios.put(`http://localhost:3001/usuarios/${User.id}`, {
+            Username: editedUser.username,
+            Passwrd: editedUser.passwrd,
+            Email: User.email,
+            Rol: "Usuario",
+        }).then((response) => {
+            navigate("/perfil");
+            setIsEditMode(false);
+        }).catch((error) => {
+            console.error("Error al guardar los cambios: ", error);
+        });
     };
 
     const logout = () => {
@@ -120,32 +132,50 @@ export default function Perfil() {
                                     <h2>{User.username} </h2>
                                     <h4>Email: {User.email}</h4>
                                 </div><br />
-                                <Button primary icon labelPosition="left" onClick={handleEdit}>
-                                    <Icon name="edit outline" />
-                                    Editar Datos
-                                </Button>
-                                {isEditMode && (
+
+                                {isEditMode ? (
                                     <>
+                                        <Input
+                                            placeholder="Nuevo nombre de usuario"
+                                            value={editedUser.username}
+                                            onChange={(e) => setEditedUser({ ...editedUser, username: e.target.value })}
+                                        /><br /><br />
+                                        <Input
+                                            type="password"
+                                            placeholder="Nueva Contraseña"
+                                            value={editedUser.passwrd}
+                                            onChange={(e) => setEditedUser({ ...editedUser, passwrd: e.target.value })}
+                                        /><br /><br />
+
                                         <Button color="green" icon labelPosition="left" onClick={handleSaveChanges}>
                                             <Icon name="save outline" />
-                                            Guardar Cambios
+                                            Guardar cambios
                                         </Button>
                                         <Button color="red" icon labelPosition="left" onClick={handleEdit}> <Icon name="window close" />Cancelar</Button>
                                     </>
+
+                                ) : (
+                                    <>
+                                        <Button primary icon labelPosition="left" onClick={handleEdit}>
+                                            <Icon name="edit outline" />
+                                            Editar datos
+                                        </Button>
+                                        <Button color="red" content="Cerrar sesión" onClick={logout} icon="log out"></Button>
+                                    </>
                                 )}
-                                <Button color="red" content="Cerrar sesión" onClick={logout}></Button>
+
                             </Grid.Column>
                         </Grid.Row>
 
                         <Grid.Row >
                             <Grid.Column width={16} >
-                                <Tab panes={panes}/>
+                                <Tab panes={panes} />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </Form>
             </Container>
-            
+
         </>
     );
 };
