@@ -26,10 +26,18 @@ export class UsuariosService {
             if (existingUser.length > 0) {
                 throw new Error('Ya existe un usuario con este correo electrónico.');
             }
-
-            // Si no existe, proceder con la creación del usuario
-            await queryRunner.query('CALL CrearUsuario(?, ?, ?, ?)', [username, passwrd, email, rol]);
-            await queryRunner.commitTransaction();
+            else {
+                // Si no existe, proceder con la creación del usuario
+                await queryRunner.query('CALL CrearUsuario(?, ?, ?, ?)', [username, passwrd, email, rol]);
+                await queryRunner.commitTransaction();
+                // Devolver el usuario creado
+                const newUser = new Usuario();
+                newUser.Username = username;
+                newUser.Passwrd = passwrd;
+                newUser.Email = email;
+                newUser.Rol = rol;
+                return newUser;
+            }
         } catch (error) {
             await queryRunner.rollbackTransaction();
             throw error;
@@ -37,13 +45,6 @@ export class UsuariosService {
             await queryRunner.release();
         }
 
-        // Devolver el usuario creado
-        const newUser = new Usuario();
-        newUser.Username = username;
-        newUser.Passwrd = passwrd;
-        newUser.Email = email;
-        newUser.Rol = rol;
-        return newUser;
     }
 
     async obtenerUsuarioPorID(userID: number): Promise<Usuario> {
@@ -90,7 +91,7 @@ export class UsuariosService {
         if (user.length === 0) {
             return null;
         }
-        
+
         const payload = { id: user[0].ID, username: user[0].Username, email: user[0].Email, rol: user[0].Rol };
 
         const token = this.jwtService.sign(payload);

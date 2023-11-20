@@ -44,7 +44,7 @@ export default function JuegosDescripcion({ juego }) {
         const decodedToken = jwtDecode(token);
         const user = decodedToken.id;
 
-        const Info = { user: user, elemento: juego.id, tipo: "Juego" };
+        const Info = { user: user, elemento: juego.id, tipo: "Juegos" };
 
         axios.post("http://localhost:3001/listas/added", Info)
             .then(response => {
@@ -60,20 +60,20 @@ export default function JuegosDescripcion({ juego }) {
             const decodedToken = jwtDecode(token);
             const user = decodedToken.id;
 
-            const datos = { user: user, elemento: id, status: "Ver más tarde", tipo: "Juego" }
+            const datos = { user: user, elemento: id, status: "Ver más tarde", tipo: "Juegos", titulo: juego.name, img: juego.background_image }
             axios.post(`http://localhost:3001/listas/agregar`, datos)
                 .then(response => {
                     if (response.data.affectedRows === 0) {
                         setMessage(true);
                         setTimeout(() => {
                             setMessage(false);
-                        }, 5000);
+                        }, 2000);
                     } else {
                         setIsAddedToList(true);
                         setMessageOK(true)
                         setTimeout(() => {
                             setMessageOK(false);
-                        }, 3000);
+                        }, 1000);
                     }
                 })
                 .catch(error => {
@@ -85,18 +85,18 @@ export default function JuegosDescripcion({ juego }) {
     const removeLater = (id) => {
         const decodedToken = jwtDecode(token);
         const user = decodedToken.id;
-        axios.delete(`http://localhost:3001/listas/eliminar/${user}/${id}/Juego`)
+        axios.delete(`http://localhost:3001/listas/eliminar/${user}/${id}/Juegos`)
             .then(response => {
                 if (response.data.affectedRows > 0) {
                     setMessageOK(true);
                     setTimeout(() => {
                         setMessageOK(false);
-                    }, 3000);
+                    }, 1000);
                 } else {
                     setMessage(true);
                     setTimeout(() => {
                         setMessage(false);
-                    }, 3000);
+                    }, 2000);
                 }
             })
         setIsAddedToList(false);
@@ -105,19 +105,19 @@ export default function JuegosDescripcion({ juego }) {
     const markAsCompleted = (id) => {
         const decodedToken = jwtDecode(token);
         const user = decodedToken.id;
-        const newStatus = { user: user, elemento: id, status: "Completado", tipo: "Juego" }
+        const newStatus = { user: user, elemento: id, status: "Completado", tipo: "Juegos" }
         axios.put(`http://localhost:3001/listas/status`, newStatus)
             .then(response => {
                 if (response.data.affectedRows > 0) {
                     setMessageOK(true);
                     setTimeout(() => {
                         setMessageOK(false);
-                    }, 3000);
+                    }, 1000);
                 } else {
                     setMessage(true);
                     setTimeout(() => {
                         setMessage(false);
-                    }, 3000);
+                    }, 2000);
                 }
             })
     };

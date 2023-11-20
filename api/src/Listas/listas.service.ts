@@ -18,8 +18,8 @@ export class UsuariosListasService {
         return await this.entityManager.query('CALL EliminarDeLista(?, ?, ?)', [usuarioID, elementoID, tipo]);
     }
 
-    async agregarALista(usuarioID: number, elementoID: string, estatus: string, tipo: string) {
-        const result = await this.entityManager.query('CALL AgregarALista(?, ?, ?, ?)', [usuarioID, elementoID, estatus, tipo]);
+    async agregarALista(usuarioID: number, elementoID: string, estatus: string, tipo: string, titulo: string, img: string) {
+        const result = await this.entityManager.query('CALL AgregarALista(?, ?, ?, ?, ?, ?)', [usuarioID, elementoID, estatus, tipo, titulo, img]);
         return result;
     }
 

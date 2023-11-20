@@ -17,7 +17,6 @@ export default function Resultados() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log(searchQuery)
                 const animeResponse = await axios.get(`http://localhost:3001/anime/search?search=${searchQuery.search}`);
                 setAnimeResults(animeResponse.data);
 

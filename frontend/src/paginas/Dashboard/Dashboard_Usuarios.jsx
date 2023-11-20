@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Button, Icon, Table, Modal, Input, Dropdown, Label } from "semantic-ui-react";
 import axios from "axios";
 import NavbarDash from "../../componentes/Navbar-admin";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 export default function Usuarios() {
+    const token = localStorage.getItem('token');
+    const navigate = useNavigate();
     const [usuarios, setUsuarios] = useState([]);
     const [newUser, setNewUser] = useState({
         Username: "",
@@ -24,8 +28,19 @@ export default function Usuarios() {
     });
 
     useEffect(() => {
+        verificarAcceso();
         obtenerUsuarios();
     }, []);
+
+    const verificarAcceso = () => {
+        if (!token) {
+            navigate("/login");
+        } else {
+            const decodedToken = jwtDecode(token);
+            if (decodedToken.rol == 'Usuario')
+                navigate('/');
+        }
+    }
 
     const obtenerUsuarios = () => {
         axios.get("http://localhost:3001/usuarios")

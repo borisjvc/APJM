@@ -43,20 +43,20 @@ export default function AnimeDescripcion({ anime }) {
             const decodedToken = jwtDecode(token);
             const user = decodedToken.id;
 
-            const datos = { user: user, elemento: id, status: "Ver más tarde", tipo: "Anime" }
+            const datos = { user: user, elemento: id, status: "Ver más tarde", tipo: "Anime", titulo: anime.title.romaji, img: anime.coverImage.large }
             axios.post(`http://localhost:3001/listas/agregar`, datos)
                 .then(response => {
                     if (response.data.affectedRows === 0) {
                         setMessage(true);
                         setTimeout(() => {
                             setMessage(false);
-                        }, 5000);
+                        }, 2000);
                     } else {
                         setIsAddedToList(true);
                         setMessageOK(true)
                         setTimeout(() => {
                             setMessageOK(false);
-                        }, 3000);
+                        }, 1000);
                     }
                 })
                 .catch(error => {
@@ -74,12 +74,12 @@ export default function AnimeDescripcion({ anime }) {
                     setMessageOK(true);
                     setTimeout(() => {
                         setMessageOK(false);
-                    }, 3000);
+                    }, 1000);
                 } else {
                     setMessage(true);
                     setTimeout(() => {
                         setMessage(false);
-                    }, 3000);
+                    }, 2000);
                 }
             })
         setIsAddedToList(false);
@@ -95,12 +95,12 @@ export default function AnimeDescripcion({ anime }) {
                     setMessageOK(true);
                     setTimeout(() => {
                         setMessageOK(false);
-                    }, 3000);
+                    }, 1000);
                 } else {
                     setMessage(true);
                     setTimeout(() => {
                         setMessage(false);
-                    }, 3000);
+                    }, 2000);
                 }
             })
     };
