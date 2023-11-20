@@ -14,6 +14,7 @@ import Usuarios from './paginas/Dashboard/Dashboard_Usuarios';
 import Perfil from './paginas/Perfil';
 import DashListas from './paginas/Dashboard/Dashboard_Listas';
 import Resultados from './paginas/Busqueda';
+import ImageSearch from './paginas/ImagenBusqueda';
 
 function App() {
   const router = createBrowserRouter([
@@ -69,6 +70,10 @@ function App() {
     {
       path: "/resultados/:search",
       element: <Resultados />
+    },
+    {
+      path: "/imagen",
+      element: <ImageSearch/>
     }
 
   ])

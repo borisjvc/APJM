@@ -29,6 +29,7 @@ export default function Navbar() {
                 <a href="/anime">Anime</a>
                 <a href="/manga">Manga</a>
                 <a href='/trivia'>Trivia</a>
+                <a href='/Imagen'>Imagenes</a>
                 <div style={{ float: 'right' }}>
                     {!token ? (
                         <a href="/login">
