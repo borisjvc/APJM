@@ -63,13 +63,13 @@ export default function PeliculasDescripcion({ pelicula }) {
                         setMessage(true);
                         setTimeout(() => {
                             setMessage(false);
-                        }, 5000);
+                        }, 2000);
                     } else {
                         setIsAddedToList(true);
                         setMessageOK(true)
                         setTimeout(() => {
                             setMessageOK(false);
-                        }, 3000);
+                        }, 1000);
                     }
                 })
                 .catch(error => {
@@ -87,12 +87,12 @@ export default function PeliculasDescripcion({ pelicula }) {
                     setMessageOK(true);
                     setTimeout(() => {
                         setMessageOK(false);
-                    }, 3000);
+                    }, 1000);
                 } else {
                     setMessage(true);
                     setTimeout(() => {
                         setMessage(false);
-                    }, 3000);
+                    }, 2000);
                 }
             })
         setIsAddedToList(false);
@@ -108,12 +108,12 @@ export default function PeliculasDescripcion({ pelicula }) {
                     setMessageOK(true);
                     setTimeout(() => {
                         setMessageOK(false);
-                    }, 3000);
+                    }, 1000);
                 } else {
                     setMessage(true);
                     setTimeout(() => {
                         setMessage(false);
-                    }, 3000);
+                    }, 2000);
                 }
             })
     };

@@ -65,4 +65,20 @@ export class UsuariosController {
 
         return { token: user.token, message: 'Login exitoso' };
     }
+
+    @Post('Google')
+    async Google(
+        @Body('Username') username: string,
+        @Body('Email') Email: string,
+        @Body('Passwrd') Passwrd: string
+    ) {
+        try {
+            const user = await this.usuariosService.validateUser(Email, Passwrd);
+            return { token: user.token, message: 'Login exitoso' };
+        } catch (error) {
+            const newUser = await this.usuariosService.crearUsuario(username, Passwrd, Email);
+            return { user: newUser, message: 'Registro exitoso' };
+        }
+
+    }
 }

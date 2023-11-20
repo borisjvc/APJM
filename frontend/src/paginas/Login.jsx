@@ -14,10 +14,6 @@ const LoginForm = () => {
         password: '',
     });
 
-
-
-
-
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token)
@@ -30,7 +26,6 @@ const LoginForm = () => {
             ...formValues, [name]: value,
         });
     };
-
 
     const handleLogin = () => {
         const userData = {
@@ -81,15 +76,26 @@ const LoginForm = () => {
 
                 const datos = {
                     Email: response.data.email,
-                    Passwrd: response.data.name,
+                    Passwrd: response.data.id,
                     Username: response.data.name
                 }
 
-                const resRegistro = await axios.post("http://localhost:3001/usuarios", datos);//si esto da error entonces hacemos login porque ya existe la cuenta
+                axios.post("http://localhost:3001/usuarios/Google", datos)
+                    .then(response => {
+                        if (response.data.message == 'Login exitoso') {
+                            const token = response.data.token;
+                            localStorage.setItem('token', token);
+                            const decodedToken = jwtDecode(token);
 
-                //const token = response.data.token;
-                //localStorage.setItem('token', token);
-                //navigate("/");
+                            if (decodedToken.rol == "Administrador")
+                                navigate("/dashboard/usuarios");
+                            else
+                                navigate("/");
+                        }else if(response.data.message == 'Registro exitoso'){
+                            setFormValues({correo: response.data.user.Email, password: response.data.user.Passwrd})
+                        }
+                        handleLogin();
+                    })
             } catch (error) {
                 console.log("Error al obtener el perfil del usuario:", error);
             }
