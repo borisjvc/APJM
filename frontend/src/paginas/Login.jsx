@@ -149,7 +149,7 @@ const LoginForm = () => {
                         <br />
                         <br />
                         <Divider horizontal content="O" />
-                        <Button onClick={login}>Iniciar sesión con Google</Button>
+                        <Button icon="google" onClick={login}>Iniciar sesión con Google</Button>
                     </Segment>
                 </Form>
             </Grid.Column>
