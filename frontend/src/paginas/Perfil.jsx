@@ -122,7 +122,7 @@ export default function Perfil() {
     return (
         <>
             <Navbar />
-            <Container className="emp-profile" style={{ background: `linear-gradient(to top, #22211F, #F7B829)`, color: 'black' }}>
+            <Container className="emp-profile" style={{ background: `linear-gradient(to top, #000000 , #FFFFFF)`, color: 'black' }}>
                 <Form>
                     <Grid >
                         <Grid.Row>
@@ -151,7 +151,7 @@ export default function Perfil() {
                                             onChange={(e) => setEditedUser({ ...editedUser, passwrd: e.target.value })}
                                         /><br /><br />
 
-                                        <Button color="green" icon labelPosition="left" onClick={handleSaveChanges}>
+                                        <Button color="black" icon labelPosition="left" onClick={handleSaveChanges}>
                                             <Icon name="save outline" />
                                             Guardar cambios
                                         </Button>
@@ -160,7 +160,7 @@ export default function Perfil() {
 
                                 ) : (
                                     <>
-                                        <Button primary icon labelPosition="left" onClick={handleEdit}>
+                                        <Button color='black' icon labelPosition="left" onClick={handleEdit}>
                                             <Icon name="edit outline" />
                                             Editar datos
                                         </Button>
