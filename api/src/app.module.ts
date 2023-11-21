@@ -16,6 +16,7 @@ import { UsuariosListasController } from './Listas/listas.controller';
 import { UsuariosListasService } from './Listas/listas.service';
 import { GeolocationController } from './geolocacion/geolocation.controller';
 import { GeolocationService } from './geolocacion/geolocation.service';
+import { CorreoController } from './correo/correo.controller';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { GeolocationService } from './geolocacion/geolocation.service';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true
     }), UsuariosModule, HttpModule],
-  controllers: [JuegosController, AnimeController, MangaController, PeliculasController, TriviaController, UsuariosListasController, GeolocationController],
+  controllers: [JuegosController, AnimeController, MangaController, PeliculasController, TriviaController, UsuariosListasController, GeolocationController, CorreoController],
   providers: [AnimeService, MangaService, PeliculasService, JuegosService, TriviaService, UsuariosListasService, GeolocationService],
 }) //convertir en modulos
 export class AppModule { }

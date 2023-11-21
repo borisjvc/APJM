@@ -79,7 +79,6 @@ export class UsuariosService {
         }
     }
 
-
     async eliminarUsuario(userID: number): Promise<void> {
         await this.usuarioRepository.query('CALL EliminarUsuario(?)', [userID]);
     }

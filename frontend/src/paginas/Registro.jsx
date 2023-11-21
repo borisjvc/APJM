@@ -25,15 +25,17 @@ export default function Registro() {
             setNotificationVisible(true);
             return;
         }
-
+        
         try {
-            const response = await axios.post("http://localhost:3001/usuarios", formValues);
+            await axios.post("http://localhost:3001/usuarios", formValues);
+            await axios.post(`http://localhost:3001/correo/enviar`,formValues.Email );
             setSuccess(true);
-            console.log("Registro exitoso", response.data);
-            
+
             setTimeout(() => {
                 navigate("/login");
             }, 3000);
+
+
         } catch (error) {
             console.error("Error al registrar usuario", error.response.data);
             setError(true);
