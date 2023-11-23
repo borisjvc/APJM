@@ -17,7 +17,7 @@ export default function JuegosDescripcion({ juego }) {
 
     const fetchJuegos = async () => {
         try {
-            
+
             const response = await axios.get(`http://localhost:3001/games/list?page=${randomPage}`);
             setJuegos(response.data);
         } catch (error) {
@@ -30,7 +30,7 @@ export default function JuegosDescripcion({ juego }) {
         getStatus();
     }, [juego]);
 
-    const handleCardClick = (Id) => { 
+    const handleCardClick = (Id) => {
         fetchJuegos();
         setJuegos([]);
         navigate(`/descripcion/juegos/${Id}`);
@@ -158,7 +158,9 @@ export default function JuegosDescripcion({ juego }) {
             <article className="middle-article">
                 <h1 className="description-title">{juego.name}</h1>
                 <h2>Descripción</h2>
-                {juego.description_raw}
+                <p style={{ textAlign: "justify" }}>
+                    {juego.description_raw}
+                </p>
 
                 <h2>Más juegos</h2>
                 <Card.Group itemsPerRow={5}>

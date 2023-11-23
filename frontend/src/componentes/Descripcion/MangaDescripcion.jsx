@@ -146,7 +146,9 @@ export default function MangaDescripcion({ manga }) {
             <article className="middle-article">
                 <h1 className="description-title">{manga.title}</h1>
                 <h2>Sinopsis: </h2>
-                <p>{manga.synopsis}</p>
+                <p style={{ textAlign: "justify" }}>
+                    <p>{manga.synopsis}</p>
+                </p>
                 <br />
                 <br />
 

@@ -27,6 +27,7 @@ export class CorreoController {
             };
 
             await transporter.sendMail(mailOptions);
+            console.log("correo enviado")
             return 'Correo enviado con éxito';
         } catch (error) {
             console.error(`Error al enviar el correo: ${error.message}`);

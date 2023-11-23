@@ -153,7 +153,9 @@ export default function PeliculasDescripcion({ pelicula }) {
             <article className="middle-article">
                 <h1 className="description-title">{pelicula.titleText.text}</h1>
                 <h2>Descripción: </h2>
-                {pelicula.plot.plotText.plainText}
+                <p style={{ textAlign: "justify" }}>
+                    {pelicula.plot.plotText.plainText}
+                </p>
 
                 <h2>Más peliculas</h2>
                 <Card.Group itemsPerRow={5}>

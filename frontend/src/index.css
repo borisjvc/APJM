@@ -67,7 +67,7 @@ button:focus-visible {
 }
 
 h1{
-  color:rgb(211, 213, 79);
+  color: #fed353;
   display: block;
   font-size: 4em;
   font-weight: bold;
@@ -75,5 +75,5 @@ h1{
 }
 
 p{
-  font-size: 1.3em;
+  font-size: 1.1em;
 }

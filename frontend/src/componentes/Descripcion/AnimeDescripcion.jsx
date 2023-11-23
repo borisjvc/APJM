@@ -142,7 +142,9 @@ export default function AnimeDescripcion({ anime }) {
             <article className="middle-article">
                 <h1 className="description-title">{anime.title.romaji}</h1>
                 <h2>Sinopsis: </h2>
-                <p>{anime.description}</p>
+                <p style={{ textAlign: "justify" }}>
+                    <p>{anime.description}</p>
+                </p>
 
                 <h2>Recomendaciones:</h2>
                 <Card.Group itemsPerRow={5}>
